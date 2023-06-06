@@ -24,19 +24,22 @@ public class Instance {
     private long id = System.currentTimeMillis();
     @JsonProperty("number_jobs")
     private int n;
-    @JsonProperty("machines")
+    @JsonProperty("moldable_machines")
     private int m;
+    @JsonProperty("sequential_machines")
+    private int l;
     // @JsonDeserialize(as = Job[].class)
     @JsonProperty("jobs")
     private Job[] jobs;
 
     @Setter
     @JsonIgnore
-    private Machine[] machines;
+    private Machine[] machines = new Machine[0];
 
-    public Instance(int n, int m, Job[] jobs) {
+    public Instance(int n, int m, int l, Job[] jobs) {
         this.n = n;
         this.m = m;
+        this.l = l;
         this.jobs = jobs;
     }
 
@@ -50,6 +53,7 @@ public class Instance {
     public void generateRandomInstance(int minJobs, int maxJobs, int minMachines, int maxMachines, int maxSeqTime) {
 
         this.m = MyMath.getRandomNumber(minMachines, maxMachines);
+        this.l = MyMath.getRandomNumber(minMachines, maxMachines); //TODO different parameters??
         this.n = MyMath.getRandomNumber(minJobs, maxJobs);
         this.jobs = new Job[this.n];
         
@@ -60,7 +64,8 @@ public class Instance {
                 processingTimes[j] = (int) (processingTimes[0] / (j + 1)); //minimal processing time
                 // processingTimes[j] = MyMath.getRandomNumber((int) Math.ceil((j / (double) (j + 1)) * processingTimes[j - 1]), processingTimes[j - 1]); //comment in for random processing times.
             }
-            this.jobs[i] = new Job(i, processingTimes);
+            int sequentialProcessingTime = processingTimes[0] + MyMath.getRandomNumber(20, maxSeqTime); //TODO!!
+            this.jobs[i] = new Job(i, processingTimes, sequentialProcessingTime);
         }
 
     }
@@ -80,6 +85,7 @@ public class Instance {
         }
         return result;
     }
+
     @JsonIgnore
     public void addMachines(List<Machine> machines) {
         machines.addAll(Arrays.asList(this.machines));

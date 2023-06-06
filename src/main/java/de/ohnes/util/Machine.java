@@ -25,7 +25,7 @@ public class Machine {
     public void addJob(Job job) {
         this.jobs.add(job);
         this.jobs = this.jobs.stream().sorted(Comparator.comparing(Job::getStartingTime)).collect(Collectors.toList());
-        this.usedTime += job.getProcessingTime(job.getAllotedMachines());
+        this.usedTime += job.getAllotedMachines() == 0 ? job.getSequentialProcessingTime() : job.getProcessingTime(job.getAllotedMachines());
     }
 
     public void removeJob(Job job) {

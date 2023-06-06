@@ -24,20 +24,22 @@ public class InstanceDeserializer extends StdDeserializer<Instance> {
     @Override
     public Instance deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
-        int m = (node.get("machines")).asInt();
+        int m = (node.get("moldable_machines")).asInt();
+        int l = (node.get("sequential_machines")).asInt();
         int n = (node.get("number_jobs")).asInt();
         List<Job> jobs = new ArrayList<>();
         for(JsonNode job : node.get("jobs")) {
             int jobId = job.get("id").asInt();
+            int sequentialProcessingTime = job.get("sequentialProcessingTime").asInt();
             int[] pTimes = new int[m];
             int i = 0;
             for(JsonNode pTime : job.get("processingTimes")) {
                 pTimes[i++] = pTime.asInt();
             }
-            jobs.add(new Job(jobId, pTimes));
+            jobs.add(new Job(jobId, pTimes, sequentialProcessingTime));
         }
 
-        return new Instance(n, m, jobs.toArray(Job[] :: new));
+        return new Instance(n, m, l, jobs.toArray(Job[] :: new));
     }
     
 }

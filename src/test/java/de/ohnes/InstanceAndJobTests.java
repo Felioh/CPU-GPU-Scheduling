@@ -29,7 +29,7 @@ public class InstanceAndJobTests {
     @Parameterized.Parameters
     public static List<Object[]> input() {
         int[] pTimes = {100, 80, 50, 40 ,30};
-        Job job = new Job(0, pTimes);
+        Job job = new Job(0, pTimes, 0);
 
         return Arrays.asList(new Object[][] {{job, 60, 3}, {job, 50, 3}, {job, 20, -1}, {job, 100, 1}, {job, 110, 1}});
     }

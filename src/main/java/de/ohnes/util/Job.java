@@ -10,14 +10,20 @@ import lombok.Setter;
 public class Job {
     
     private long id;
-    private int[] processingTimes;
     private int startingTime;
-    private int allotedMachines;
 
-    public Job(int id, int[] processingTimes) {
+    //moldable
+    private int[] processingTimes;
+    private int allotedMachines;
+    
+    //sequential
+    private int sequentialProcessingTime;
+    private Machine assignedMachine; //not really needed.
+    
+    public Job(int id, int[] processingTimes, int sequentialProcessingTime) {
         this.id = id;
         this.processingTimes = processingTimes;
-
+        this.sequentialProcessingTime = sequentialProcessingTime;
     }
 
     @Override

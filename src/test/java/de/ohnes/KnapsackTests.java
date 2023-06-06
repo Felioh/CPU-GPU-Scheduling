@@ -58,7 +58,7 @@ public class KnapsackTests {
         int n1 = 8;
         int W1 = 3;
         for(int i = 0; i < n1; i++) {
-            allJobs1.add(new Job(i, null));
+            allJobs1.add(new Job(i, null, 0));
         }
 
         return Arrays.asList(new Object[][] {{allJobs1, null, wt1, val1, n1, W1}});

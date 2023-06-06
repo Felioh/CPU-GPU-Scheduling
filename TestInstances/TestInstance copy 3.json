@@ -1,26 +1,32 @@
 {
-    "machines": 3,
+    "moldable_machines": 3,
+    "sequential_machines": 2,
     "number_jobs": 5,
     "jobs": [
         {
             "id": 0,
-            "processingTimes": [51, 49, 48]
+            "processingTimes": [51, 49, 48],
+            "sequentialProcessingTime": 60
         },
         {
             "id": 1,
-            "processingTimes": [51, 49, 48]
+            "processingTimes": [51, 49, 48],
+            "sequentialProcessingTime": 50
         },
         {
             "id": 2,
-            "processingTimes": [100, 70, 61]
+            "processingTimes": [100, 70, 61],
+            "sequentialProcessingTime": 110
         },
         {
             "id": 3,
-            "processingTimes": [60, 31, 29]
+            "processingTimes": [60, 31, 29],
+            "sequentialProcessingTime": 70
         },
         {
             "id": 4,
-            "processingTimes": [40, 20, 15]
+            "processingTimes": [40, 20, 15],
+            "sequentialProcessingTime": 50
         }
     ]
 }

@@ -59,7 +59,7 @@ public class RadixSortTest {
     public void testRadixSort() {
         RadixSort radixSort = new RadixSort(this.base);
         //dummy arrays. only test the sorting of the first array.
-        Job[] jobs = Arrays.stream(this.list).mapToObj(i -> new Job(i, null)).toArray(Job[] :: new);
+        Job[] jobs = Arrays.stream(this.list).mapToObj(i -> new Job(i, null, 0)).toArray(Job[] :: new);
         int[] list2 = this.list.clone();
         radixSort.sortDynamicList(this.list, jobs, list2);
         for (int i = 0; i < this.list.length; i++) {
