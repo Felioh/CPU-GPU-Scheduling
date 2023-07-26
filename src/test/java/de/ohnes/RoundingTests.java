@@ -59,10 +59,6 @@ public class RoundingTests {
         return Arrays.asList(new Object[][] {{a1, lower1, upper1, x1, solU1, solL1}, {a2, lower2, upper2, x2, solU2, solL2}});
     }
 
-    private static int random(int min, int max) {
-        return (int) Math.round(min + Math.random() * (max - min));
-    }
-
     @Test
     public void testGeometricFloor() {
         double sol = GeometricalRounding.gFloor(a, lower, upper, x);
