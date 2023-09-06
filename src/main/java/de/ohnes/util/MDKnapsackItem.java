@@ -1,8 +1,8 @@
 package de.ohnes.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,26 +13,17 @@ public class MDKnapsackItem {
     /**the original job for reconstruction */
     private Job job;
 
-    private List<Choice> choices;
+    private List<KnapsackChoice> choices = new ArrayList<>();
 
     public void addChoice(MDKnapsackChoice allotment, int cost, Vector3D weight) {
-        this.choices.add(new Choice(allotment, cost, weight));
+        this.choices.add(new KnapsackChoice(allotment, cost, weight));
     }
     
     public Integer[] getCosts() {
-        return choices.stream().map(Choice::getCost).toArray(Integer[] :: new);
+        return choices.stream().map(KnapsackChoice::getCost).toArray(Integer[] :: new);
     }
     
     public Vector3D[] getWeights() {
-        return choices.stream().map(Choice::getWeight).toArray(Vector3D[] :: new);
+        return choices.stream().map(KnapsackChoice::getWeight).toArray(Vector3D[] :: new);
     }
-}
-
-@Getter
-@Setter
-@AllArgsConstructor
-class Choice {
-    private MDKnapsackChoice allotment;
-    private int cost;
-    private Vector3D weight;
 }
