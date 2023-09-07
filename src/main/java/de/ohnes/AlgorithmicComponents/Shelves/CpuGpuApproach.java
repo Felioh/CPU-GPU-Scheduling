@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.ohnes.AlgorithmicComponents.Algorithm;
-import de.ohnes.AlgorithmicComponents.Knapsack.DynamicKnapsack;
-import de.ohnes.AlgorithmicComponents.Knapsack.KnapsackSolver;
 import de.ohnes.AlgorithmicComponents.Knapsack.MDKnapsack;
 import de.ohnes.logger.printSchedule;
 import de.ohnes.util.Instance;

@@ -39,8 +39,8 @@ public class MDKnapsack {
                             continue; //skip if weight is too big. //TODO: needed??
                         }
                         double minVal = Double.MAX_VALUE;
-                        for (int c = 0; c < costs.length; c++) {
-                            Vector3D w = weights[i];
+                        for (int c = 0; c < costs.length; c++) { //for the choices
+                            Vector3D w = weights[c];
                             int x1_ = x1 - w.get(0);
                             int x2_ = x2 - w.get(1);
                             int x3_ = x3 - w.get(2);
@@ -50,8 +50,8 @@ public class MDKnapsack {
                             if (dp[i][x1_][x2_][x3_] == null) { //init.
                                 dp[i][x1_][x2_][x3_] = new DPEntry();
                             }
-                            if (dp[i][x1_][x2_][x3_].getValue() + costs[i] < minVal) {
-                                minVal = dp[i][x1_][x2_][x3_].getValue() + costs[i];
+                            if (dp[i][x1_][x2_][x3_].getValue() + costs[c] < minVal) {
+                                minVal = dp[i][x1_][x2_][x3_].getValue() + costs[c];
                             }
                         }
                         if (minVal < Double.MAX_VALUE) {
@@ -86,7 +86,7 @@ public class MDKnapsack {
                     continue;
                 }
                 DPEntry entry = dp[i-1][newWeight.get(0)][newWeight.get(1)][newWeight.get(2)];
-                if (entry.isDefined()) {
+                if (entry != null && entry.isDefined()) {
                     switch (choice.getAllotment()) {
                         case SMALL:
                             smallJobs.add(item.getJob());

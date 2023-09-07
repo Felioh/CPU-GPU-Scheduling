@@ -55,6 +55,22 @@ public class MDKnapsackTests {
         item1.addChoice(MDKnapsackChoice.SMALL, 4, new Vector3D(0, 0, 0));
         items.add(item1);
 
+        MDKnapsackItem item2 = new MDKnapsackItem();
+        item2.setJob(new Job(1, new int[]{10, 20, 30}, 20));
+        item2.addChoice(MDKnapsackChoice.SHELF1, 1, new Vector3D(10, 0, 0));
+        item2.addChoice(MDKnapsackChoice.SHELF2, 2, new Vector3D(0, 10, 0));
+        item2.addChoice(MDKnapsackChoice.SEQUENCIAL, 3, new Vector3D(0, 0, 10));
+        item2.addChoice(MDKnapsackChoice.SMALL, 4, new Vector3D(0, 0, 0));
+        items.add(item2);
+
+        MDKnapsackItem item3 = new MDKnapsackItem();
+        item3.setJob(new Job(1, new int[]{10, 20, 30}, 20));
+        item3.addChoice(MDKnapsackChoice.SHELF1, 1, new Vector3D(10, 0, 0));
+        item3.addChoice(MDKnapsackChoice.SHELF2, 2, new Vector3D(0, 10, 0));
+        item3.addChoice(MDKnapsackChoice.SEQUENCIAL, 3, new Vector3D(0, 0, 10));
+        item3.addChoice(MDKnapsackChoice.SMALL, 4, new Vector3D(0, 0, 0));
+        items.add(item3);
+
 
         return Arrays.asList(new Object[][] {{items, capacity, shelf1, shelf2, smallJobs, seqJobs}});
     }
