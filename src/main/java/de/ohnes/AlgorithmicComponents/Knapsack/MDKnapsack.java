@@ -99,7 +99,7 @@ public class MDKnapsack {
                             break;
                     }
                     minValue = newWeight;
-                    break;  //break out of loop as soon as allotment was found.
+                    break;  //break out of loop as soon as some allotment was found.
                 }
             }
         }
@@ -110,6 +110,6 @@ public class MDKnapsack {
 @Setter
 @NoArgsConstructor
 class DPEntry {
-    private boolean defined = false;
+    private boolean defined = false; // TODO: is this attribute redundant, i.e. !=null suffices?
     private double value;
 }
