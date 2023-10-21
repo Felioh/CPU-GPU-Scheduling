@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
 import lombok.Setter;
+// Math.floor
+import java.lang.Math;
 
 @Getter @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -41,6 +43,14 @@ public class Job {
     }
 
     /**
+     *
+     * @return the sequential execution time
+     */
+    public int getSequentialProcessingTime() {
+        return this.sequentialProcessingTime;
+    }
+
+    /**
      * find out the cononical number of machines for a job with max. execution time @param h.
      * using binary search
      * O(log m)
@@ -64,6 +74,31 @@ public class Job {
     public void reset() {
         this.startingTime = 0;
         this.allotedMachines = 0;
+    }
+
+    /**
+     * Calculate the "weight" of a job to classify its work on a sequential machine.
+     * @param d the makespan guess
+     * @return the weight
+     */
+    public int getSequentialWeight(double d) {
+        int p = this.getSequentialProcessingTime();
+        if(p > (2.0/3.0)*d) {
+            return 2;
+        } else if (p <= d/3.0) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    /**
+     * Round and scale the sequential processing time with rounding factor mu.
+     * @param mu scaling factor
+     * @return rounded and scaled processing time
+     */
+    public int getScaledRoundedSequentialProcessingTime(double mu) {
+        return (int) Math.floor(mu * this.getSequentialProcessingTime());
     }
     
 }

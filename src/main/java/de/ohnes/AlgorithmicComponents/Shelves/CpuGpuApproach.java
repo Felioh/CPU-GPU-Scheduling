@@ -33,25 +33,13 @@ public class CpuGpuApproach implements Algorithm {
     public boolean solve(double d, double epsilon) {
         //"forget about small jobs"
 
-        final double delta = (1 / 5.0) * epsilon;   //TODO richtig??
-        
+        // inverted delta
+        final int invDelta = 6;
+        final int n = I.getJobs().length;
+        final double mu = (1.0 * n * invDelta) / d;
+
         List<Job> shelf2 = new ArrayList<>(Arrays.asList(MyMath.findBigJobs(I, d)));
         List<Job> smallJobs = new ArrayList<>(Arrays.asList(MyMath.findSmallJobs(I, d)));
-        // //minimal work of small jobs
-        double Ws = 0;
-        double WShelf1 = 0;
-        double WShelf2 = 0;
-        for(Job job : smallJobs) {
-            Ws += job.getProcessingTime(1);
-        }
-
-        //all the tasks are initially allotted to their canonical number of processors to respect the d/2 threshold
-        for(Job job : shelf2) {
-            job.setAllotedMachines(job.canonicalNumberMachines(d/2));
-            WShelf2 += job.getAllotedMachines() * job.getProcessingTime(job.getAllotedMachines()); //update the work of shelf2
-        }
-
-        // System.out.println(printSchedule.printTwoShelves(bigJobs, (int) d));
 
         //transform to knapsack problem
 
@@ -61,24 +49,39 @@ public class CpuGpuApproach implements Algorithm {
             //c_{i, S}
             knapsackItem.addChoice(MDKnapsackChoice.SMALL, job.getProcessingTime(1), new Vector3D(0, 0, 0));
             //c_{i, 3}
-            knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, 0, 0)); //TODO weight(i)??? and p_j???
+            //if a choice would certainly violate the deadline d, we do not allow it.
+            if (job.getSequentialProcessingTime() <= d) {
+                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, job.getSequentialWeight(d), job.getScaledRoundedSequentialProcessingTime(mu)));
+            }
             knapsackItems.add(knapsackItem);
         }
         for (Job job : shelf2) {
             MDKnapsackItem knapsackItem = new MDKnapsackItem();
             //c_{i, 1}
             int dAllotment = job.canonicalNumberMachines(d);
-            if (dAllotment == -1) { //there cant exists a schedule of legnth d if any job cant be scheduled in d time.
+            //if a choice would certainly violate the deadline d, we do not allow it.
+            if (dAllotment > 0) {
+                knapsackItem.addChoice(MDKnapsackChoice.SHELF1, job.getProcessingTime(dAllotment) * dAllotment, new Vector3D(dAllotment, 0, 0));
+            }
+            //c_{i, 2}
+            int dHalfAllotment = job.canonicalNumberMachines(d/2);
+            //if a choice would certainly violate the deadline d, we do not alow it.
+            //here, if there is no dHalfAllotment, then the canonical number of processors is set to be infinite,
+            //thus the cost would be infinite, thus the resulting work would not be below the threshold.
+            if (dHalfAllotment > 0) {
+                knapsackItem.addChoice(MDKnapsackChoice.SHELF2, job.getProcessingTime(dHalfAllotment) * dHalfAllotment, new Vector3D(0, 0, 0));
+            }
+            //c_{i, 3}
+            //if a choice would certainly violate the deadline d, we do not allow it.
+            if (job.getSequentialProcessingTime() <= d) {
+                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, job.getSequentialWeight(d), job.getScaledRoundedSequentialProcessingTime(mu)));
+            }
+
+            // if there is no valid choice for some job, then we must reject the deadline d.
+            // this happens if a job can not be executed in time d on a sequential machine nor on m malleable machines.
+            if (knapsackItem.getChoices().isEmpty()) {
                 return false;
             }
-            knapsackItem.addChoice(MDKnapsackChoice.SHELF1, job.getProcessingTime(dAllotment) * dAllotment, new Vector3D(dAllotment, 0, 0));
-            //c_{i, 2}
-            int dHalfAllotment = job.getAllotedMachines();
-            int cost = dHalfAllotment != -1 ? job.getProcessingTime(dHalfAllotment) * dHalfAllotment : Integer.MAX_VALUE; //TODO just dont give that option.
-
-            knapsackItem.addChoice(MDKnapsackChoice.SHELF2, job.getProcessingTime(dHalfAllotment) * dHalfAllotment, new Vector3D(0, 0, 0)); //TODO richtig???
-            //c_{i, 3}
-            knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, 0, 0)); //TODO weight(i)??? and p_j???
             knapsackItems.add(knapsackItem);
         }
         
@@ -90,33 +93,34 @@ public class CpuGpuApproach implements Algorithm {
         shelf2.clear();
         List<Job> sequentialJobs = new ArrayList<>();
         smallJobs.clear();
-        Vector3D capacity = new Vector3D(I.getM(), 2* I.getL(), (int) (I.getL()*I.getN() / delta));
+        Vector3D capacity = new Vector3D(I.getM(), 2* I.getL(), invDelta * I.getL()*I.getN());
         kS.solve(knapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs);
 
-
-        for(Job selectedJob : shelf1) {
-            //update WShelf2
-            WShelf2 -= selectedJob.getAllotedMachines() * selectedJob.getProcessingTime(selectedJob.getAllotedMachines());
-
-            // "move job to shelf1"
-            selectedJob.setAllotedMachines(selectedJob.canonicalNumberMachines(d));
-            // p1 += selectedJob.canonicalNumberMachines(d); //keep track of p1
-
-            //update WShelf1
-            WShelf1 += selectedJob.getAllotedMachines() * selectedJob.getProcessingTime(selectedJob.getAllotedMachines());
+        // calculate the work for the jobs in the shelves for the malleable machines.
+        double Ws = 0;
+        double WShelf1 = 0;
+        double WShelf2 = 0;
+        for(Job job : smallJobs) {
+            Ws += job.getProcessingTime(1);
         }
-        
+        for(Job job : shelf1) {
+            job.setAllotedMachines(job.canonicalNumberMachines(d));
+            WShelf1 += job.getAllotedMachines() * job.getProcessingTime(job.getAllotedMachines()); //update the work of shelf2
+        }
+        for(Job job : shelf2) {
+            job.setAllotedMachines(job.canonicalNumberMachines(d/2));
+            WShelf2 += job.getAllotedMachines() * job.getProcessingTime(job.getAllotedMachines()); //update the work of shelf2
+        }
+
         if(WShelf1 + WShelf2 > I.getM() * d - Ws) {   //there cant exists a schedule of with makespan (s. Thesis Felix S. 76)
             return false;
         }
 
-        System.out.println();
-        // System.out.println(printSchedule.printTwoShelves(bigJobs, (int) d));
-        System.out.println(printSchedule.printTwoShelves(MyMath.findBigJobs(I, d), (int) d));
-
+        // TODO: activate the applyTransformationRules
         // List<Job> shelf0 = applyTransformationRules(d, shelf1, shelf2, p1);
-
         addSmallJobs(shelf1, shelf2, smallJobs, d, I.getM());
+
+        //TODO: use LPT on the sequential shelf to schedule those jobs
 
         return true;
     };

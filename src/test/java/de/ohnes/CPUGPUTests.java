@@ -30,7 +30,7 @@ public class CPUGPUTests {
 
     /**
      * Test all test-Instances from the folder TestInstances
-     * and some randomly generated Isntances.
+     * and some randomly generated Instances.
      * @return
      */
     @Parameterized.Parameters
