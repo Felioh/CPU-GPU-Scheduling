@@ -51,7 +51,7 @@ public class MDKnapsackTests {
         item1.setJob(new Job(1, new int[]{10, 20, 30}, 20));
         item1.addChoice(MDKnapsackChoice.SHELF1, 1, new Vector3D(10, 0, 0));
         item1.addChoice(MDKnapsackChoice.SHELF2, 2, new Vector3D(0, 10, 0));
-        item1.addChoice(MDKnapsackChoice.SEQUENCIAL, 3, new Vector3D(0, 0, 10));
+        item1.addChoice(MDKnapsackChoice.SEQUENTIAL, 3, new Vector3D(0, 0, 10));
         item1.addChoice(MDKnapsackChoice.SMALL, 4, new Vector3D(0, 0, 0));
         items.add(item1);
 
@@ -59,7 +59,7 @@ public class MDKnapsackTests {
         item2.setJob(new Job(1, new int[]{10, 20, 30}, 20));
         item2.addChoice(MDKnapsackChoice.SHELF1, 1, new Vector3D(10, 0, 0));
         item2.addChoice(MDKnapsackChoice.SHELF2, 2, new Vector3D(0, 10, 0));
-        item2.addChoice(MDKnapsackChoice.SEQUENCIAL, 3, new Vector3D(0, 0, 10));
+        item2.addChoice(MDKnapsackChoice.SEQUENTIAL, 3, new Vector3D(0, 0, 10));
         item2.addChoice(MDKnapsackChoice.SMALL, 4, new Vector3D(0, 0, 0));
         items.add(item2);
 
@@ -67,7 +67,7 @@ public class MDKnapsackTests {
         item3.setJob(new Job(1, new int[]{10, 20, 30}, 20));
         item3.addChoice(MDKnapsackChoice.SHELF1, 1, new Vector3D(10, 0, 0));
         item3.addChoice(MDKnapsackChoice.SHELF2, 2, new Vector3D(0, 10, 0));
-        item3.addChoice(MDKnapsackChoice.SEQUENCIAL, 3, new Vector3D(0, 0, 10));
+        item3.addChoice(MDKnapsackChoice.SEQUENTIAL, 3, new Vector3D(0, 0, 10));
         item3.addChoice(MDKnapsackChoice.SMALL, 4, new Vector3D(0, 0, 0));
         items.add(item3);
 

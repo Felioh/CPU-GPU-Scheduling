@@ -61,7 +61,7 @@ public class CpuGpuApproach implements Algorithm {
             //c_{i, S}
             knapsackItem.addChoice(MDKnapsackChoice.SMALL, job.getProcessingTime(1), new Vector3D(0, 0, 0));
             //c_{i, 3}
-            knapsackItem.addChoice(MDKnapsackChoice.SEQUENCIAL, 0, new Vector3D(0, 0, 0)); //TODO weight(i)??? and p_j???
+            knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, 0, 0)); //TODO weight(i)??? and p_j???
             knapsackItems.add(knapsackItem);
         }
         for (Job job : shelf2) {
@@ -78,7 +78,7 @@ public class CpuGpuApproach implements Algorithm {
 
             knapsackItem.addChoice(MDKnapsackChoice.SHELF2, job.getProcessingTime(dHalfAllotment) * dHalfAllotment, new Vector3D(0, 0, 0)); //TODO richtig???
             //c_{i, 3}
-            knapsackItem.addChoice(MDKnapsackChoice.SEQUENCIAL, 0, new Vector3D(0, 0, 0)); //TODO weight(i)??? and p_j???
+            knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, 0, 0)); //TODO weight(i)??? and p_j???
             knapsackItems.add(knapsackItem);
         }
         
