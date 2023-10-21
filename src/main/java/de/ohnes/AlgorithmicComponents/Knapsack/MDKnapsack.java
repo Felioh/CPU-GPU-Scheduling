@@ -88,7 +88,7 @@ public class MDKnapsack {
                         case SMALL:
                             smallJobs.add(item.getJob());
                             break;
-                        case SEQUENCIAL:
+                        case SEQUENTIAL:
                             seqJobs.add(item.getJob());
                             break;
                         case SHELF1:
