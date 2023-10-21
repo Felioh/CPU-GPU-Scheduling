@@ -35,9 +35,6 @@ public class MDKnapsack {
             for (int x1 = 1; x1 < dp[0].length; x1++) {
                 for (int x2 = 1; x2 < dp[0][x1].length; x2++) {
                     for (int x3 = 1; x3 < dp[0][x1][x2].length; x3++) {
-                        if (!capacity.isSmallerElementWise(x1, x2, x3)) {
-                            continue; //skip if weight is too big. //TODO: needed??
-                        }
                         double minVal = Double.MAX_VALUE;
                         for (int c = 0; c < costs.length; c++) { //for the choices
                             Vector3D w = weights[c];
