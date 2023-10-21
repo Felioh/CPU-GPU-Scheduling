@@ -80,6 +80,10 @@ public class MDKnapsackTests {
         MDKnapsack kS = new MDKnapsack();
         kS.solve(items, capacity, shelf1, shelf2, smallJobs, seqJobs);
         assertTrue("All jobs should be selected", shelf1.size() + shelf2.size() + smallJobs.size() + seqJobs.size() == items.size()); //length should be leq than capacity
+        assertTrue("No job should be chosen as small", smallJobs.size()==0);
+        assertTrue("In Shelf1 should be 1 job.", shelf1.size()==1);
+        assertTrue("In Shelf2 should be 1 job.", shelf2.size()==1);
+        assertTrue("In seqJobs should be 1 job.", seqJobs.size()==1);
         // assertThat(selectedJobs, );
     }
 }
