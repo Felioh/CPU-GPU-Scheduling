@@ -44,11 +44,11 @@ public class MDKnapsack {
                             if (x1_ < 0 || x2_ < 0 || x3_ < 0) {
                                 continue;
                             }
-                            if (dp[i][x1_][x2_][x3_] == null) { //init.
-                                dp[i][x1_][x2_][x3_] = new DPEntry();
+                            if (dp[i-1][x1_][x2_][x3_] == null) {
+                                continue;
                             }
-                            if (dp[i][x1_][x2_][x3_].getValue() + costs[c] < minVal) {
-                                minVal = dp[i][x1_][x2_][x3_].getValue() + costs[c];
+                            if (dp[i-1][x1_][x2_][x3_].getValue() + costs[c] < minVal) {
+                                minVal = dp[i-1][x1_][x2_][x3_].getValue() + costs[c];
                             }
                         }
                         if (minVal < Double.MAX_VALUE) {
