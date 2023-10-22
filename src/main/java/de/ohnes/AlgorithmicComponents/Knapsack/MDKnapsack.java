@@ -6,24 +6,18 @@ import de.ohnes.util.Job;
 import de.ohnes.util.KnapsackChoice;
 import de.ohnes.util.MDKnapsackItem;
 import de.ohnes.util.Vector3D;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 public class MDKnapsack {
 
     public void solve(List<MDKnapsackItem> items, Vector3D capacity, List<Job> shelf1, List<Job> shelf2, List<Job> smallJobs, List<Job> seqJobs) {
-        DPEntry[][][][] dp = new DPEntry[items.size()+1][capacity.get(0)+1][capacity.get(1)+1][capacity.get(2)+1];
+        Double[][][][] dp = new Double[items.size()+1][capacity.get(0)+1][capacity.get(1)+1][capacity.get(2)+1];
 
 
         //initialization
         for (int x1 = 0; x1 < dp[0].length; x1++) {
             for (int x2 = 0; x2 < dp[0][x1].length; x2++) {
                 for (int x3 = 0; x3 < dp[0][x1][x2].length; x3++) {
-                    dp[0][x1][x2][x3] = new DPEntry();
-                    dp[0][x1][x2][x3].setDefined(true);
-                    dp[0][x1][x2][x3].setValue(0);
-
+                    dp[0][x1][x2][x3] = 0.0;
                 }
             }
         }
@@ -47,14 +41,12 @@ public class MDKnapsack {
                             if (dp[i-1][x1_][x2_][x3_] == null) {
                                 continue;
                             }
-                            if (dp[i-1][x1_][x2_][x3_].getValue() + costs[c] < minVal) {
-                                minVal = dp[i-1][x1_][x2_][x3_].getValue() + costs[c];
+                            if (dp[i-1][x1_][x2_][x3_] + costs[c] < minVal) {
+                                minVal = dp[i-1][x1_][x2_][x3_] + costs[c];
                             }
                         }
                         if (minVal < Double.MAX_VALUE) {
-                            dp[i][x1][x2][x3] = new DPEntry();
-                            dp[i][x1][x2][x3].setDefined(true);
-                            dp[i][x1][x2][x3].setValue(minVal);
+                            dp[i][x1][x2][x3] = minVal;
                         }
                     }
                 }
@@ -66,8 +58,8 @@ public class MDKnapsack {
         for (int x1 = 0; x1 < dp[0].length; x1++) {
             for (int x2 = 0; x2 < dp[0][x1].length; x2++) {
                 for (int x3 = 0; x3 < dp[0][x1][x2].length; x3++) {
-                    if (dp[items.size()][x1][x2][x3] != null && dp[items.size()][x1][x2][x3].getValue() < minCost) {
-                        minCost = dp[items.size()][x1][x2][x3].getValue();
+                    if (dp[items.size()][x1][x2][x3] != 0 && dp[items.size()][x1][x2][x3] < minCost) {
+                        minCost = dp[items.size()][x1][x2][x3];
                         minValue = new Vector3D(x1, x2, x3);
                     }
                 }
@@ -82,8 +74,7 @@ public class MDKnapsack {
                 if (newWeight.get(0) < 0 || newWeight.get(1) < 0 || newWeight.get(2) < 0) {
                     continue;
                 }
-                DPEntry entry = dp[i-1][newWeight.get(0)][newWeight.get(1)][newWeight.get(2)];
-                if (entry != null && entry.isDefined()) {
+                if (dp[i-1][newWeight.get(0)][newWeight.get(1)][newWeight.get(2)] != null) {
                     switch (choice.getAllotment()) {
                         case SMALL:
                             smallJobs.add(item.getJob());
@@ -104,12 +95,4 @@ public class MDKnapsack {
             }
         }
     }
-}
-
-@Getter
-@Setter
-@NoArgsConstructor
-class DPEntry {
-    private boolean defined = false; // TODO: is this attribute redundant, i.e. !=null suffices?
-    private double value;
 }
