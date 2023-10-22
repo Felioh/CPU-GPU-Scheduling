@@ -58,7 +58,7 @@ public class MDKnapsack {
         for (int x1 = 0; x1 < dp[0].length; x1++) {
             for (int x2 = 0; x2 < dp[0][x1].length; x2++) {
                 for (int x3 = 0; x3 < dp[0][x1][x2].length; x3++) {
-                    if (dp[items.size()][x1][x2][x3] != 0 && dp[items.size()][x1][x2][x3] < minCost) {
+                    if (dp[items.size()][x1][x2][x3] != null && dp[items.size()][x1][x2][x3] < minCost) {
                         minCost = dp[items.size()][x1][x2][x3];
                         minValue = new Vector3D(x1, x2, x3);
                     }

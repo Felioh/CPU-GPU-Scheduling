@@ -16,6 +16,7 @@ public class Job {
 
     //moldable
     private int[] processingTimes;
+    //0 inticates unset, -1 indicates sequential
     private int allotedMachines;
     
     //sequential
@@ -39,6 +40,9 @@ public class Job {
      * @return the execution time
      */
     public int getProcessingTime(int i) {
+        if (this.allotedMachines == -1) {
+            return getSequentialProcessingTime();
+        }
         return this.processingTimes[i - 1];
     }
 

@@ -72,7 +72,7 @@ public class LPTTests {
 
     @Test
     public void testLPT() {
-        LongestProcessingTime.LPT(this.I);
+        LongestProcessingTime.LPT(Arrays.asList(this.I.getJobs()), this.I);
         assertTrue("all jobs are assigned to a machine", Arrays.asList(this.I.getJobs()).stream().allMatch(j -> j.getAssignedMachine() != null));
         
         int smallestProcessingTime = Arrays.asList(this.I.getJobs()).stream().sorted(Comparator.comparing(Job::getSequentialProcessingTime)).findFirst().get().getSequentialProcessingTime();
