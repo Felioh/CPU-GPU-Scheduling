@@ -64,7 +64,7 @@ public class Instance {
                 processingTimes[j] = (int) (processingTimes[0] / (j + 1)); //minimal processing time
                 // processingTimes[j] = MyMath.getRandomNumber((int) Math.ceil((j / (double) (j + 1)) * processingTimes[j - 1]), processingTimes[j - 1]); //comment in for random processing times.
             }
-            int sequentialProcessingTime = processingTimes[0] + MyMath.getRandomNumber(20, maxSeqTime); //TODO!!
+            int sequentialProcessingTime = MyMath.getRandomNumber(20, maxSeqTime); //TODO!!
             this.jobs[i] = new Job(i, processingTimes, sequentialProcessingTime);
         }
 

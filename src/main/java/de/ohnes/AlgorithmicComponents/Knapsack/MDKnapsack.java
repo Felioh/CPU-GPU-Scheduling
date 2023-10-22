@@ -32,12 +32,9 @@ public class MDKnapsack {
         for (int i = 1; i <= items.size(); i++) {
             Integer[] costs = items.get(i-1).getCosts();
             Vector3D[] weights = items.get(i-1).getWeights();
-            for (int x1 = 1; x1 < dp[0].length; x1++) {
-                for (int x2 = 1; x2 < dp[0][x1].length; x2++) {
-                    for (int x3 = 1; x3 < dp[0][x1][x2].length; x3++) {
-                        if (!capacity.isSmallerElementWise(x1, x2, x3)) {
-                            continue; //skip if weight is too big. //TODO: needed??
-                        }
+            for (int x1 = 0; x1 < dp[0].length; x1++) {
+                for (int x2 = 0; x2 < dp[0][x1].length; x2++) {
+                    for (int x3 = 0; x3 < dp[0][x1][x2].length; x3++) {
                         double minVal = Double.MAX_VALUE;
                         for (int c = 0; c < costs.length; c++) { //for the choices
                             Vector3D w = weights[c];
@@ -47,11 +44,11 @@ public class MDKnapsack {
                             if (x1_ < 0 || x2_ < 0 || x3_ < 0) {
                                 continue;
                             }
-                            if (dp[i][x1_][x2_][x3_] == null) { //init.
-                                dp[i][x1_][x2_][x3_] = new DPEntry();
+                            if (dp[i-1][x1_][x2_][x3_] == null) {
+                                continue;
                             }
-                            if (dp[i][x1_][x2_][x3_].getValue() + costs[c] < minVal) {
-                                minVal = dp[i][x1_][x2_][x3_].getValue() + costs[c];
+                            if (dp[i-1][x1_][x2_][x3_].getValue() + costs[c] < minVal) {
+                                minVal = dp[i-1][x1_][x2_][x3_].getValue() + costs[c];
                             }
                         }
                         if (minVal < Double.MAX_VALUE) {
@@ -66,9 +63,9 @@ public class MDKnapsack {
 
         Vector3D minValue = new Vector3D(0, 0, 0);
         double minCost = Double.MAX_VALUE;
-        for (int x1 = 1; x1 < dp[0].length; x1++) {
-            for (int x2 = 1; x2 < dp[0][x1].length; x2++) {
-                for (int x3 = 1; x3 < dp[0][x1][x2].length; x3++) { 
+        for (int x1 = 0; x1 < dp[0].length; x1++) {
+            for (int x2 = 0; x2 < dp[0][x1].length; x2++) {
+                for (int x3 = 0; x3 < dp[0][x1][x2].length; x3++) {
                     if (dp[items.size()][x1][x2][x3] != null && dp[items.size()][x1][x2][x3].getValue() < minCost) {
                         minCost = dp[items.size()][x1][x2][x3].getValue();
                         minValue = new Vector3D(x1, x2, x3);
@@ -91,7 +88,7 @@ public class MDKnapsack {
                         case SMALL:
                             smallJobs.add(item.getJob());
                             break;
-                        case SEQUENCIAL:
+                        case SEQUENTIAL:
                             seqJobs.add(item.getJob());
                             break;
                         case SHELF1:
@@ -102,7 +99,7 @@ public class MDKnapsack {
                             break;
                     }
                     minValue = newWeight;
-                    break;  //break out of loop as soon as allotment was found.
+                    break;  //break out of loop as soon as some allotment was found.
                 }
             }
         }
@@ -113,6 +110,6 @@ public class MDKnapsack {
 @Setter
 @NoArgsConstructor
 class DPEntry {
-    private boolean defined = false;
+    private boolean defined = false; // TODO: is this attribute redundant, i.e. !=null suffices?
     private double value;
 }
