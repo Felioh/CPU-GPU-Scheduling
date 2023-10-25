@@ -1,4 +1,5 @@
 package de.ohnes;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -54,4 +55,15 @@ public class KnapsackTests {
         assertTrue("The number of selected Jobs should be <= to the capacity", selectedJobs.size() <= W); //length should be leq than capacity
         // assertThat(selectedJobs, );
     }
+    
+    @Test
+    public void testOptimalValue() {
+        KnapsackSolver kS = new DynamicKnapsack();
+        List<Job> selectedJobs = kS.solve(allJobs, wt, val, n, W);
+        int totalValue = selectedJobs.stream().mapToInt(j -> val[(int) j.getId()]).sum();
+        int totalWeight = selectedJobs.stream().mapToInt(j -> wt[(int) j.getId()]).sum();
+        assertTrue("The total weight should be <= to the capacity", totalWeight <= W);
+        assertEquals("The total value should be optimal", 20, totalValue);
+    }
+    
 }

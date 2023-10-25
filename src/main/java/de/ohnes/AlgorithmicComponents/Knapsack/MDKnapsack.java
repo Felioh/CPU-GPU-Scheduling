@@ -7,6 +7,10 @@ import de.ohnes.util.KnapsackChoice;
 import de.ohnes.util.MDKnapsackItem;
 import de.ohnes.util.Vector3D;
 
+/**
+ * The MDKnapsack class represents a multi-dimensional knapsack problem solver.
+ * It provides a method to solve the problem and allocate jobs to different shelves based on their weights and costs.
+ */
 public class MDKnapsack {
 
     public void solve(List<MDKnapsackItem> items, Vector3D capacity, List<Job> shelf1, List<Job> shelf2, List<Job> smallJobs, List<Job> seqJobs) {

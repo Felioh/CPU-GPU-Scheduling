@@ -15,6 +15,14 @@ import de.ohnes.util.MDKnapsackChoice;
 import de.ohnes.util.MDKnapsackItem;
 import de.ohnes.util.Vector3D;
 
+/**
+ * This class contains JUnit tests for the MDKnapsack class. It tests the solve() method of the MDKnapsack class
+ * with different input parameters. The test cases include a list of MDKnapsackItems, a capacity vector, and lists of
+ * jobs for different choices. The test cases are parameterized using the Parameterized JUnit runner.
+ * The testMDKnapsack() method tests if the solve() method returns the expected output for each test case.
+ * The test cases cover the scenario where all jobs should be selected, no job should be chosen as small, and
+ * the number of jobs in each choice list is as expected.
+ */
 @RunWith(Parameterized.class)
 public class MDKnapsackTests {
 
