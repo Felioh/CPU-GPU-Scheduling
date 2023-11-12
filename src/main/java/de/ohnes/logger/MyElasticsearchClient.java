@@ -30,9 +30,6 @@ public class MyElasticsearchClient {
     private static final Logger LOGGER = LogManager.getLogger(MyElasticsearchClient.class);
 
     private static RestHighLevelClient restHighLevelClient;
-    
-    private static List<TestResult> data = new ArrayList<TestResult>();
-
 
     // public ElasticsearchClient(String host, int port) {
     //     // Create the transport with a Jackson mapper
@@ -50,33 +47,26 @@ public class MyElasticsearchClient {
         return restHighLevelClient;
     }
 
-    public static boolean pushData(String index) {
+    public static boolean pushData(String index, TestResult data) {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {};
         BulkRequest br = new BulkRequest();
-        for(TestResult tr : data) {
             try {
-                br.add(new IndexRequest(index).source(objectMapper.readValue(objectMapper.writeValueAsString(tr), typeRef)));
+                br.add(new IndexRequest(index).source(objectMapper.readValue(objectMapper.writeValueAsString(data), typeRef)));
             } catch (IOException e) {
                 LOGGER.warn("Couldn't reach ES Server. Saving data locally until next try.");
                 return false;
             }
-        }
-        LOGGER.info("Trying to push {} Elements to Elasticsearch...", data.size());
+        LOGGER.debug("Trying to push test result to Elasticsearch...");
         // System.out.println("Pushing " + data.size() + " Elements to Elasticsearch...");
         
         try {
-            BulkResponse bulkResponse = restHighLevelClient.bulk(br, RequestOptions.DEFAULT);
+            restHighLevelClient.bulk(br, RequestOptions.DEFAULT);
         } catch (Exception e) {
             LOGGER.warn("Couldn't reach ES Server. Saving data locally until next try.");
             return false;
         }
-        data.clear();
         return true;
-    }
-
-    public static void addData(TestResult result) {
-        MyElasticsearchClient.data.add(result);
     }
     
 }

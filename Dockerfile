@@ -1,16 +1,19 @@
+FROM maven:3.9.4-eclipse-temurin-11-alpine as build
+WORKDIR /src
+COPY . .
+RUN mvn package -DskipTests
+
 FROM adoptopenjdk/openjdk11:latest
 WORKDIR /
-ENV INSTANCE_RANDOM true
 ENV EPSILON "0.1"
-ENV INSTANCE_MINJOBS 20
-ENV INSTNACE_MAXJOBS 200
-ENV INSTANCE_MINMACHINES 50
-ENV INSTANCE_MAXMACHINES 100
+ENV INSTANCE_MINJOBS 10
+ENV INSTANCE_MAXJOBS 10
+ENV INSTANCE_MINMACHINES 10
+ENV INSTANCE_MAXMACHINES 10
 ENV INSTANCE_MAX_SEQUENTIAL_TIME 100
-ENV ELASTICSEARCH_HOST "localhost"
+ENV ES_HOST "localhost"
 ENV ES_INDEX "testdata-"
-ENV DETATCHED true
-ENV EXECS_BEFORE_PUSH 10
 
-ADD target/bachelorarbeit-1.0-SNAPSHOT-jar-with-dependencies.jar Bachelorarbeit.jar
-ENTRYPOINT ["java", "-jar", "Bachelorarbeit.jar"]
+COPY --from=build /src/target/cpu-gpu-scheduling-1.0-SNAPSHOT-jar-with-dependencies.jar SchedulingAlgorithms.jar
+# use the Epslion ("noops") GC, because we want to measure the time of these algorithms.
+ENTRYPOINT ["java", "-jar", "SchedulingAlgorithms.jar", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseEpsilonGC"]
