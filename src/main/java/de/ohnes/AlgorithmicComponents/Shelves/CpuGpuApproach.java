@@ -34,8 +34,9 @@ public class CpuGpuApproach extends GrageApproach {
 
         // inverted delta
         final int invDelta = 6;
-        final int n = I.getJobs().length;
-        final double mu = (1.0 * n * invDelta) / d;
+        final int n = I.getN();
+        final int l = I.getL();
+        final double mu = (1.0 * n * invDelta) / d * l;
 
         List<Job> shelf2 = new ArrayList<>(Arrays.asList(MyMath.findBigJobs(I, d)));
         List<Job> smallJobs = new ArrayList<>(Arrays.asList(MyMath.findSmallJobs(I, d)));
@@ -112,7 +113,7 @@ public class CpuGpuApproach extends GrageApproach {
         shelf2.clear();
         List<Job> sequentialJobs = new ArrayList<>();
         smallJobs.clear();
-        Vector3D capacity = new Vector3D(I.getM(), 2* I.getL(), invDelta * I.getL()*I.getN());
+        Vector3D capacity = new Vector3D(I.getM(), 2* l, invDelta * n + 1);
         kS.solve(smallKnapsackItems, bigKnapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs);
 
         // calculate the work for the jobs in the shelves for the malleable machines.
