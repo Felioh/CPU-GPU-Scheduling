@@ -1,15 +1,12 @@
 package de.ohnes.logger;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
@@ -38,10 +35,10 @@ public class MyElasticsearchClient {
     //     };
     // }
 
-    public static synchronized RestHighLevelClient makeConnection(String host) {
+    public static synchronized RestHighLevelClient makeConnection(String host, int port) {
         if(restHighLevelClient == null) {
             restHighLevelClient = new RestHighLevelClient(RestClient.builder(
-                new HttpHost(host, 9200)
+                new HttpHost(host, port)
             ));
         }
         return restHighLevelClient;

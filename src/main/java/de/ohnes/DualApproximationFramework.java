@@ -50,7 +50,7 @@ public class DualApproximationFramework {
         I.resetInstance(); //reset the instance because it was altered in previous attempt.
         if(algo.solve(mid, epsilon)) { //a schedule of length "mid" exists
 
-            if(r - mid < epsilon) {
+            if((1 + epsilon) * l > mid) {
                 return mid;
             }
 

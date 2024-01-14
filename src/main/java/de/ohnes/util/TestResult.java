@@ -12,6 +12,8 @@ public class TestResult {
     private long InstanceID;
     private int jobs;
     private int machines;
+    private int seqMachines;
+    private int malMachines;
     private double estimatedOptimum;
     private double achivedMakespan;
     private long milliseconds;

@@ -1,15 +1,16 @@
 services:
   scheduling:
-    image: cpugpu:1.0.0
+    image: cpugpu:1.1.0
     environment:
       - EPSILON=0.1
-      - INSTANCE_MINJOBS=10
-      - INSTANCE_MAXJOBS=50
-      - INSTANCE_MINMACHINES=5
-      - INSTANCE_MAXMACHINES=30
+      - INSTANCE_MINJOBS=50
+      - INSTANCE_MAXJOBS=120
+      - INSTANCE_MINMACHINES=30
+      - INSTANCE_MAXMACHINES=35
       - ES_HOST=192.168.178.101
-      - ES_INDEX=cpugpu-0.1
+      - ES_PORT=9200
+      - ES_INDEX=cpugpu2-jobs-2024-01
     # depends_on:
     #   elasticsearch:
     #     condition: service_healthy
-    restart: always
+    restart: unless-stopped
