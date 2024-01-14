@@ -4,6 +4,7 @@ Algorithms for machine scheduling with malleable jobs
 An Implementation of the algorithms from Jansen & Land and Grage & Jansen, building upon an algorithm from Mounié, Rapine and Trystram.
 
 - [Quick Start](#quick-start)
+  - [Run the local test-files](#run-the-local-test-files)
 - [Execution with docker-compose](#execution-with-docker-compose)
 - [Building docker images](#building-docker-images)
 - [Configuration for testing](#configuration-for-testing)
@@ -17,7 +18,7 @@ docker build -t malleable . && docker run malleable
 ```
 
 ## Run the local test-files
-```bash
+```console
 ohnesorge@DESKTOP-FELIX:/mnt/d/workspace/CPU-GPU-Scheduling$ docker build -t malleable . && docker run -e TEST_FILE_PATH=/testfiles -v $(pwd)/TestInstances:/testfiles:ro malleable
 [+] Building 50.9s (12/12) FINISHED
 ...

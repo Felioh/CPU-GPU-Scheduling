@@ -79,6 +79,7 @@ public class App {
                 System.exit(1);
             }
         }
+        System.exit(0);
     }
 
     private static void readEnv() {
