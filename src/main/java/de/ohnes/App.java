@@ -108,7 +108,7 @@ public class App {
         long startTime = System.currentTimeMillis();
         double d = dF.start(epsilon);
         long endTime = System.currentTimeMillis();
-        LOGGER.info("Ran instance with {} machines and {} jobs in {} milliseconds.", I.getM(), I.getN(), (endTime - startTime));
+        LOGGER.info("Ran instance with {} malleable, {} sequential machines and {} jobs in {} milliseconds.", I.getM(), I.getL(), I.getN(), (endTime - startTime));
 
         TestResult tr = new TestResult();
         tr.setAchivedMakespan(I.getMakespan());

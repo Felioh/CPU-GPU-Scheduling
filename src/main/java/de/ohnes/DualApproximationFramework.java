@@ -29,15 +29,9 @@ public class DualApproximationFramework {
     public double start(double epsilon) {
         
         Algorithm usedAlgo;
-        if(I.getM() >= 8 * (I.getN() / epsilon)) {
-            LOGGER.info("Starting dual approximation Framework with fptas: {}", this.getFPTASName());
-            usedAlgo = this.fptas;
-            usedAlgo.setInstance(I);
-        } else {
-            LOGGER.info("Starting dual approximation Framework with shelvesAlgo: {}", this.getShelvesAlgoName());
-            usedAlgo = this.knapsack;
-            usedAlgo.setInstance(I);
-        }
+        LOGGER.info("Starting dual approximation Framework with shelvesAlgo: {}", this.getShelvesAlgoName());
+        usedAlgo = this.knapsack;
+        usedAlgo.setInstance(I);
         double lowerBound = this.approx.approximate(I) / 2; //TODO this bound could be thighter.
         double upperBound = lowerBound * 8;                 //TODO add list scheduling. -> schedule twiari greedy and divide by 2.
 

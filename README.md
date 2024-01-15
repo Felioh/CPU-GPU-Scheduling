@@ -18,6 +18,10 @@ docker build -t malleable . && docker run malleable
 ```
 
 ## Run the local test-files
+```
+docker build -t malleable . && docker run -e TEST_FILE_PATH=/testfiles -v $(pwd)/TestInstances:/testfiles:ro malleable
+```
+Output:
 ```console
 ohnesorge@DESKTOP-FELIX:/mnt/d/workspace/CPU-GPU-Scheduling$ docker build -t malleable . && docker run -e TEST_FILE_PATH=/testfiles -v $(pwd)/TestInstances:/testfiles:ro malleable
 [+] Building 50.9s (12/12) FINISHED
@@ -45,6 +49,7 @@ ohnesorge@DESKTOP-FELIX:/mnt/d/workspace/CPU-GPU-Scheduling$ docker build -t mal
 /////////////////////////////////0002/////////////////////////////////##################0004##################
 /////////////////////////////////0002/////////////////////////////////
 ////////////////////////////0003////////////////////////////
+...
 ```
 
 # Execution with docker-compose
