@@ -30,17 +30,18 @@ public class CpuGpuApproach extends GrageApproach {
      */
     @Override
     public boolean solve(double d, double epsilon) {
-        //"forget about small jobs"
 
         // inverted delta
         final int invDelta = 6;
         final int n = I.getN();
         final int l = I.getL();
-        final double v = (2.0 * invDelta) / d; //TODO: separate rounding for big tasks and small tasks
+        final double v = (2.0 * invDelta) / d;
         final double mu = (1.0 * n * invDelta) / d * l;
 
         List<Job> shelf2 = new ArrayList<>(Arrays.asList(MyMath.findBigJobs(I, d)));
         List<Job> smallJobs = new ArrayList<>(Arrays.asList(MyMath.findSmallJobs(I, d)));
+
+        int totalWeight = 0; //variable to keep track of the total weight of all jobs.
 
         //transform to knapsack problem
 
@@ -56,8 +57,9 @@ public class CpuGpuApproach extends GrageApproach {
             //if a choice would certainly violate the deadline d, we do not allow it.
             if (job.getSequentialProcessingTime() <= d) {
                 weight = job.getSequentialWeight(d);
-                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, weight, job.getScaledRoundedSequentialProcessingTime(mu)));
+                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, weight, job.getSequentialProcessingTime()));
             }
+            totalWeight += weight;
             if (weight > 0) {
                 // if the job is big
                 bigKnapsackItems.add(knapsackItem);
@@ -88,7 +90,7 @@ public class CpuGpuApproach extends GrageApproach {
             //if a choice would certainly violate the deadline d, we do not allow it.
             if (job.getSequentialProcessingTime() <= d) {
                 weight = job.getSequentialWeight(d);
-                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, weight, job.getScaledRoundedSequentialProcessingTime(mu)));
+                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, weight, job.getSequentialProcessingTime()));
             }
 
             // if there is no valid choice for some job, then we must reject the deadline d.
@@ -96,7 +98,7 @@ public class CpuGpuApproach extends GrageApproach {
             if (knapsackItem.getChoices().isEmpty()) {
                 return false;
             }
-            
+            totalWeight += weight;
             if (weight > 0) {
                 // if the job is big
                 bigKnapsackItems.add(knapsackItem);
@@ -117,9 +119,9 @@ public class CpuGpuApproach extends GrageApproach {
         // 1st dimension: number of machines used by T_1 (less than m)
         // 2nd dimension: weight of tasks on L (less than 2l)
         // 3rd dimension: total work regarding the scaled and rounded instace on L (less than n/\delta)
-        //      -> optimized: (less than 2l/\delta)
-        Vector3D capacity = new Vector3D(I.getM(), 2* l, invDelta * 2 * l + 1);
-        kS.solve(smallKnapsackItems, bigKnapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs);
+        //      -> optimized: (less than 2l/\delta - \floor{2/(3\delta)}\sum_{i \in T_L} weight(i))
+        Vector3D capacity = new Vector3D(I.getM(), 2* l, 2 * l * invDelta - ((2 * invDelta) / 3) * totalWeight); //integer division should take care of floor
+        kS.solve(smallKnapsackItems, bigKnapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs, mu, v);
 
         // calculate the work for the jobs in the shelves for the malleable machines.
         double Ws = 0;

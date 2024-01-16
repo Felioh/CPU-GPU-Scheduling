@@ -89,7 +89,7 @@ public class MDKnapsackTests {
     @Test
     public void testMDKnapsack() {
         MDKnapsack kS = new MDKnapsack();
-        kS.solve(smallItems, bigItems, capacity, shelf1, shelf2, smallJobs, seqJobs);
+        kS.solve(smallItems, bigItems, capacity, shelf1, shelf2, smallJobs, seqJobs, 1, 1); //TODO 1, 1 is not a good choice for mu and v
         assertTrue("All jobs should be selected", shelf1.size() + shelf2.size() + smallJobs.size() + seqJobs.size() == smallItems.size() + bigItems.size()); //length should be leq than capacity
         assertTrue("No job should be chosen as small", smallJobs.size()==0);
         assertTrue("In Shelf1 should be 1 job.", shelf1.size()==1);
