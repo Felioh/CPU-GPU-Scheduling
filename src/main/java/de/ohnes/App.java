@@ -2,14 +2,11 @@ package de.ohnes;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
