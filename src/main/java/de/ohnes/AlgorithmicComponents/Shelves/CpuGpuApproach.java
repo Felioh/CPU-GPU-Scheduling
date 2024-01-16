@@ -36,8 +36,8 @@ public class CpuGpuApproach extends GrageApproach {
         final int invDelta = 6;
         final int n = I.getN();
         final int l = I.getL();
-        final double mu = (2.0 * invDelta) / d; //TODO: separate rounding for big tasks and small tasks
-        // final double mu = (1.0 * n * invDelta) / d * l;
+        final double v = (2.0 * invDelta) / d; //TODO: separate rounding for big tasks and small tasks
+        final double mu = (1.0 * n * invDelta) / d * l;
 
         List<Job> shelf2 = new ArrayList<>(Arrays.asList(MyMath.findBigJobs(I, d)));
         List<Job> smallJobs = new ArrayList<>(Arrays.asList(MyMath.findSmallJobs(I, d)));

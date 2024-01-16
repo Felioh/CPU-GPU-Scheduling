@@ -1,6 +1,5 @@
 package de.ohnes.AlgorithmicComponents.Knapsack;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -200,5 +199,7 @@ public class MDKnapsack {
                 }
             }
         }
+        // at the end we should arrive at 0.0
+        assert dp[0][minValue.get(0)][minValue.get(2)][minValue.get(1)] == 0.0;
     }
 }
