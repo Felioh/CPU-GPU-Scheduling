@@ -12,6 +12,10 @@ public class Vector3D {
         return this.values[i];
     }
 
+    public void set(int i, int value) {
+        this.values[i] = value;
+    }
+
     public boolean isSmallerElementWise(int x1, int x2, int x3) {
         return x1 <= this.values[0] && x2 <= this.values[1] && x3 <= this.values[2];
     }
