@@ -55,6 +55,7 @@ public class CPUGPUTests {
                     e.printStackTrace();
                 }
                 instances.add(args);
+                // return Arrays.asList(instances.toArray(Object[][] :: new));
             }
         }
 

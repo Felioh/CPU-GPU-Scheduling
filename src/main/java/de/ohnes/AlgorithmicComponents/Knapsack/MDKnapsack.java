@@ -3,6 +3,7 @@ package de.ohnes.AlgorithmicComponents.Knapsack;
 import java.util.HashMap;
 import java.util.List;
 
+import de.ohnes.AlgorithmicComponents.Shelves.CpuGpuApproach;
 import de.ohnes.util.Job;
 import de.ohnes.util.KnapsackChoice;
 import de.ohnes.util.MDKnapsackItem;
@@ -28,17 +29,18 @@ public class MDKnapsack {
      */
     public void solve(List<MDKnapsackItem> smallItems, List<MDKnapsackItem> bigItems, Vector3D capacity, List<Job> shelf1, List<Job> shelf2, List<Job> smallJobs, List<Job> seqJobs, double mu, double v) {
 
-        int b = bigItems.size();
-        int s = smallItems.size();
-        int n = s + b;
-        double muDivV = mu / v;
+        final int b = bigItems.size();
+        final int s = smallItems.size();
+        final int n = s + b;
+        final double muDivV = mu / v;
+        final int invDelta = CpuGpuApproach.invDelta;
         
         //Attention: the order of the dimensions is swapped!
         // 1st dimension: number of items
         // 2nd dimension: T_1 uses at most M machines (malleable constraint)
-        // 3rd dimension: total work on L
-        // 4th dimension: total weight on L (not used by small jobs)
-        Double[][][][] BigDP = new Double[b+1][capacity.get(0)][capacity.get(2)][capacity.get(1)];
+        // 3th dimension: total weight on L (not used by small jobs)
+        // 4rd dimension: total work on L
+        Double[][][][] BigDP = new Double[b + 1][capacity.get(0) + 1][capacity.get(1) + 1][capacity.get(2) + 1];
         
         
         //initialization
@@ -64,8 +66,8 @@ public class MDKnapsack {
                             //Attention: the order of the dimensions is swapped!
                             int x1_ = x1 - w.get(0);
                             //qHat = \floor{p_i/v} - weight(i) * \floor{d/3*v}
-                            int x2_ = x2 - (int) Math.floor(w.get(2) * v) - w.get(1) * 4; //round the processing time accordingly.
-                            int x3_ = x3 - w.get(1);
+                            int x2_ = x2 - (int) Math.floor(w.get(1) * v) - w.get(2) * (int) Math.floor(2 * invDelta / 3); //TODO remove math.floor
+                            int x3_ = x3 - w.get(2);
                             if (x1_ < 0 || x2_ < 0 || x3_ < 0) {
                                 continue;
                             }
@@ -86,26 +88,29 @@ public class MDKnapsack {
 
         //discard 2nd constraint, as the small items don't change it.
         
-        Double[][][] SmallDP = new Double[s+1][capacity.get(0)+1][n * 6]; // n*6 is n/\delta TODO: parameterize this.
+        Double[][][] SmallDP = new Double[s + 1][capacity.get(0)+1][n * invDelta + 1];
         //TODO: this map is not strictly necessary, but it makes the code more readable.
-        HashMap<String, Integer> map = new HashMap<>(); // a map to remember the position of the best solution for the big items
+        HashMap<String, int[]> map = new HashMap<>(); // a map to remember the position of the best solution for the big items
          //initialization
         for (int x1 = 0; x1 < BigDP[0].length; x1++) {
             for (int x2 = 0; x2 < BigDP[0][x1].length; x2++) {
+                // 2l/\delta - y* \floor{2/3\delta}
+                int x3UpperBound = capacity.get(1) * invDelta - x2 * (int) Math.floor(2 * invDelta / 3); //TODO: remove math.floor
                 // find the best solution for the big items
                 // remember the position of best solution
-                for (int x3 = 0; x3 < BigDP[b][x1][x2].length; x3++) {
+                for (int x3 = 0; x3 < Math.min(x3UpperBound, BigDP[0][x1][x2].length); x3++) { //TODO: check correctness
                     Double p = BigDP[b][x1][x2][x3];
                     if (p != null) {
-                        int x2Rescaled = (int) Math.floor((x3 * 4 + x2) * muDivV);
+                        // \floor{(w\floor{d/3 * v} + qHat) *mu/v}
+                        int x2Rescaled = (int) Math.floor((x2 * (int) Math.floor(2 * invDelta / 3) + x3) * muDivV); //TODO: remove math.floor
                         String key = x1 + "," + x2Rescaled;
                         if (map.containsKey(key)) {
                             if (BigDP[b][x1][x2][x3] < SmallDP[0][x1][x2Rescaled]) {
-                                map.put(key, x3);
+                                map.put(key, new int[]{x2, x3});
                                 SmallDP[0][x1][x2Rescaled] = p;
                             }
                         } else {
-                            map.put(key, x3);
+                            map.put(key, new int[]{x2, x3});
                             SmallDP[0][x1][x2Rescaled] = p; //TODO: this throws an IndexOutOfBoundsException
                         }
                     }
@@ -142,7 +147,6 @@ public class MDKnapsack {
             }
         }
 
-
         Vector3D minValue = new Vector3D(0, 0, 0);
         double minCost = Double.MAX_VALUE;
         for (int x1 = 0; x1 < SmallDP[0].length; x1++) {
@@ -154,16 +158,18 @@ public class MDKnapsack {
                 }
             }
         }
-        // minValue.set(1, map.get(minValue.get(0) + "," + minValue.get(2))); // set the 2nd dimension to the best solution for the big items
+        // assert minValue.get(0) != 0 || minValue.get(2) != 0;
+
         //reconstruction for small items
-        for (int i = s; i > 0; i--) {
-            MDKnapsackItem item = smallItems.get(i - 1);
+        for (int i = s - 1; i >= 0; i--) {
+            MDKnapsackItem item = smallItems.get(i);
             for (KnapsackChoice choice : item.getChoices()) {
-                Vector3D newWeight = minValue.subtract(choice.getWeight().get(0), 0 , (int) Math.floor(choice.getWeight().get(2) * mu));
+                // subtract the first dimension and the rounded 3rd dimension from the current weight
+                Vector3D newWeight = minValue.subtract(choice.getWeight().get(0), 0, (int) Math.floor(choice.getWeight().get(1) * mu));
                 if (newWeight.get(0) < 0 || newWeight.get(1) < 0 || newWeight.get(2) < 0) {
                     continue;
                 }
-                if (SmallDP[i-1][newWeight.get(0)][newWeight.get(2)] != null) {
+                if (SmallDP[i][newWeight.get(0)][newWeight.get(2)] != null) {
                     switch (choice.getAllotment()) {
                         case SMALL:
                             smallJobs.add(item.getJob());
@@ -184,19 +190,25 @@ public class MDKnapsack {
             }
         }
 
-        minValue.set(1, map.get(minValue.get(0) + "," + minValue.get(2))); // set the 2nd dimension to the best solution for the big items
+        // reconstruct the solution for the big items
+
+        // recover the 3rd dimension
+        int[] bigIndex = map.get(minValue.get(0) + "," + minValue.get(1));
+        minValue.set(1, bigIndex[0]);
+        minValue.set(2, bigIndex[1]);
 
 
         //reconstruction for big items
         for (int i = b; i > 0; i--) {
             MDKnapsackItem item = bigItems.get(i - 1);
             for (KnapsackChoice choice : item.getChoices()) {
-                int x3 = (int) Math.floor(choice.getWeight().get(2) * v) - choice.getWeight().get(1) * 4;
-                Vector3D newWeight = minValue.subtract(choice.getWeight().get(0), choice.getWeight().get(1), x3);
+                //subtract the first and third dimension and the rounded 2nd dimension from the current weight
+                int x2 = (int) Math.floor(choice.getWeight().get(1) * v) - choice.getWeight().get(2) * 4; 
+                Vector3D newWeight = minValue.subtract(choice.getWeight().get(0), x2, choice.getWeight().get(2));
                 if (newWeight.get(0) < 0 || newWeight.get(1) < 0 || newWeight.get(2) < 0) {
                     continue;
                 }
-                if (BigDP[i-1][newWeight.get(0)][newWeight.get(2)][newWeight.get(1)] != null) {
+                if (BigDP[i-1][newWeight.get(0)][newWeight.get(1)][newWeight.get(2)] != null) {
                     switch (choice.getAllotment()) {
                         case SMALL:
                             smallJobs.add(item.getJob());
@@ -217,6 +229,21 @@ public class MDKnapsack {
             }
         }
         // at the end we should arrive at 0.0
-        assert BigDP[0][minValue.get(0)][minValue.get(2)][minValue.get(1)] == 0.0;
+        assert BigDP[0][minValue.get(0)][minValue.get(1)][minValue.get(2)] == 0.0;
     }
+
+    // private boolean reconstructSolution(Double[][][] SmallDP, Vector3D currentWeight, List<MDKnapsackItem> items, List<Job> shelf1, List<Job> shelf2, List<Job> smallJobs, List<Job> seqJobs, int i) {
+        
+    //     MDKnapsackItem item = items.get(i - 1);
+    //     for (KnapsackChoice choice : item.getChoices()) {
+    //         // subtract the first dimension and the rounded 3rd dimension from the current weight
+    //         Vector3D nextWeight = currentWeight.subtract(choice.getWeight().get(0), (int) Math.floor(choice.getWeight().get(1) * mu) , 0);
+    //         if (nextWeight.get(0) < 0 || nextWeight.get(1) < 0 || nextWeight.get(2) < 0) {
+    //             return false; //sequence of choices is invalid.
+    //         }
+
+
+    //     }
+
+    // }
 }

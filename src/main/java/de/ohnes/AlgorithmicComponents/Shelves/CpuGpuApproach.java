@@ -18,6 +18,9 @@ import de.ohnes.util.Vector3D;
  */
 public class CpuGpuApproach extends GrageApproach {
 
+    // invDelta = 1/\delta
+    public static final int invDelta = 18;
+
     public CpuGpuApproach() {
         super();
     }
@@ -31,12 +34,11 @@ public class CpuGpuApproach extends GrageApproach {
     @Override
     public boolean solve(double d, double epsilon) {
 
-        // inverted delta
-        final int invDelta = 6;
         final int n = I.getN();
         final int l = I.getL();
+        final int m = I.getM();
         final double v = (2.0 * invDelta) / d;
-        final double mu = (1.0 * n * invDelta) / d * l;
+        final double mu = (1.0 * n * invDelta) / (d * l);
 
         List<Job> shelf2 = new ArrayList<>(Arrays.asList(MyMath.findBigJobs(I, d)));
         List<Job> smallJobs = new ArrayList<>(Arrays.asList(MyMath.findSmallJobs(I, d)));
@@ -120,7 +122,7 @@ public class CpuGpuApproach extends GrageApproach {
         // 2nd dimension: weight of tasks on L (less than 2l)
         // 3rd dimension: total work regarding the scaled and rounded instace on L (less than n/\delta)
         //      -> optimized: (less than 2l/\delta - \floor{2/(3\delta)}\sum_{i \in T_L} weight(i))
-        Vector3D capacity = new Vector3D(I.getM(), 2* l, 2 * l * invDelta - ((2 * invDelta) / 3) * totalWeight); //integer division should take care of floor
+        Vector3D capacity = new Vector3D(m, 2 * l, 2 * l * invDelta); //integer division should take care of floor //TODO: restrict? - ((2 * invDelta) / 3) * totalWeight
         kS.solve(smallKnapsackItems, bigKnapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs, mu, v);
 
         // calculate the work for the jobs in the shelves for the malleable machines.
@@ -142,22 +144,22 @@ public class CpuGpuApproach extends GrageApproach {
             WShelf2 += job.getAllotedMachines() * job.getProcessingTime(job.getAllotedMachines()); //update the work of shelf2
         }
 
-        if(WShelf1 + WShelf2 > I.getM() * d - Ws) {   //there cant exists a schedule of with makespan (s. Thesis Felix S. 76)
+        if(WShelf1 + WShelf2 > m * d - Ws) {   //there cant exists a schedule of with makespan (s. Thesis Felix S. 76)
             return false;
         }
 
         // apply the applyTransformationRules
         List<Job> shelf0 = applyTransformationRules(d, shelf1, shelf2, p1);
         // List<Job> shelf0 = applyTransformationRules(d, shelf1, shelf2, p1);
-        addSmallJobs(shelf1, shelf2, smallJobs, d, I.getM());
+        addSmallJobs(shelf1, shelf2, smallJobs, d, m);
 
         List<Machine> machinesS0 = new ArrayList<>();
         double startTime = -1;
         for(Job job : shelf0) {
             if(job.getStartingTime() != startTime) {
-                Machine m = new Machine(0);
-                m.addJob(job);
-                machinesS0.add(m);
+                Machine machine = new Machine(0);
+                machine.addJob(job);
+                machinesS0.add(machine);
                 startTime = job.getProcessingTime(job.getAllotedMachines());
             } else {
                 machinesS0.get(machinesS0.size() - 1).addJob(job);
