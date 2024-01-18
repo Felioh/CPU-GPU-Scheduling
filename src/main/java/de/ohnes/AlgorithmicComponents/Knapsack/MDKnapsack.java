@@ -26,8 +26,9 @@ public class MDKnapsack {
      * @param seqJobs
      * @param mu rounding factor used for small jobs
      * @param v rounding factor used for big jobs
+     * @return true if a solution exists, false otherwise.
      */
-    public void solve(List<MDKnapsackItem> smallItems, List<MDKnapsackItem> bigItems, Vector3D capacity, List<Job> shelf1, List<Job> shelf2, List<Job> smallJobs, List<Job> seqJobs, double mu, double v) {
+    public boolean solve(List<MDKnapsackItem> smallItems, List<MDKnapsackItem> bigItems, Vector3D capacity, List<Job> shelf1, List<Job> shelf2, List<Job> smallJobs, List<Job> seqJobs, double mu, double v) {
 
         final int b = bigItems.size();
         final int s = smallItems.size();
@@ -55,6 +56,7 @@ public class MDKnapsack {
         //acutal dp
         // fist solve the knapsack problem for the big items
         for (int i = 1; i <= bigItems.size(); i++) { //for all big jobs
+            boolean placeable = false; //variable to keep track if the job is placeable at all.
             Integer[] costs = bigItems.get(i-1).getCosts();
             Vector3D[] weights = bigItems.get(i-1).getWeights();
             for (int x1 = 0; x1 < BigDP[0].length; x1++) { 
@@ -80,9 +82,13 @@ public class MDKnapsack {
                         }
                         if (minVal < Double.MAX_VALUE) {
                             BigDP[i][x1][x2][x3] = minVal;
+                            placeable = true;
                         }
                     }
                 }
+            }
+            if (!placeable) {
+                return false; //if the job is not placeable, then the knapsack problem is not solvable.
             }
         }
 
@@ -121,6 +127,7 @@ public class MDKnapsack {
         //acutal dp
         // solve the knapsack problem for the remaining small items
         for (int i = 1; i <= s; i++) {
+            boolean placeable = false; //variable to keep track if the job is placeable at all.
             Integer[] costs = smallItems.get(i-1).getCosts();
             Vector3D[] weights = smallItems.get(i-1).getWeights();
             for (int x1 = 0; x1 < SmallDP[0].length; x1++) {
@@ -142,8 +149,12 @@ public class MDKnapsack {
                     }
                     if (minVal < Double.MAX_VALUE) { //this is to find the minimum value along the 3rd dimension
                         SmallDP[i][x1][x2] = minVal;
+                        placeable = true;
                     }
                 }
+            }
+            if (!placeable) {
+                return false; //if the job is not placeable, then the knapsack problem is not solvable.
             }
         }
 
@@ -158,18 +169,20 @@ public class MDKnapsack {
                 }
             }
         }
-        // assert minValue.get(0) != 0 || minValue.get(2) != 0;
 
         //reconstruction for small items
         for (int i = s - 1; i >= 0; i--) {
             MDKnapsackItem item = smallItems.get(i);
+            boolean placed = false;
             for (KnapsackChoice choice : item.getChoices()) {
                 // subtract the first dimension and the rounded 3rd dimension from the current weight
-                Vector3D newWeight = minValue.subtract(choice.getWeight().get(0), 0, (int) Math.floor(choice.getWeight().get(1) * mu));
+                Vector3D newWeight = minValue.subtract(choice.getWeight().get(0), 0, (int) Math.floor(choice.getWeight().get(2) * mu));
                 if (newWeight.get(0) < 0 || newWeight.get(1) < 0 || newWeight.get(2) < 0) {
                     continue;
                 }
-                if (SmallDP[i][newWeight.get(0)][newWeight.get(2)] != null) {
+                if (SmallDP[i][newWeight.get(0)][newWeight.get(2)] != null && SmallDP[i][newWeight.get(0)][newWeight.get(2)] + choice.getCost() == SmallDP[i+1][minValue.get(0)][minValue.get(2)]) {
+                    assert SmallDP[i][newWeight.get(0)][newWeight.get(2)] + choice.getCost() == SmallDP[i+1][minValue.get(0)][minValue.get(2)];
+                    placed = true;
                     switch (choice.getAllotment()) {
                         case SMALL:
                             smallJobs.add(item.getJob());
@@ -188,6 +201,7 @@ public class MDKnapsack {
                     break;  //break out of loop as soon as some allotment was found.
                 }
             }
+            assert placed;
         }
 
         // reconstruct the solution for the big items
@@ -200,6 +214,7 @@ public class MDKnapsack {
 
         //reconstruction for big items
         for (int i = b; i > 0; i--) {
+            boolean placed = false;
             MDKnapsackItem item = bigItems.get(i - 1);
             for (KnapsackChoice choice : item.getChoices()) {
                 //subtract the first and third dimension and the rounded 2nd dimension from the current weight
@@ -208,7 +223,9 @@ public class MDKnapsack {
                 if (newWeight.get(0) < 0 || newWeight.get(1) < 0 || newWeight.get(2) < 0) {
                     continue;
                 }
-                if (BigDP[i-1][newWeight.get(0)][newWeight.get(1)][newWeight.get(2)] != null) {
+                if (BigDP[i-1][newWeight.get(0)][newWeight.get(1)][newWeight.get(2)] != null && BigDP[i-1][newWeight.get(0)][newWeight.get(1)][newWeight.get(2)] + choice.getCost() == BigDP[i][minValue.get(0)][minValue.get(1)][minValue.get(2)]) {
+                    assert BigDP[i-1][newWeight.get(0)][newWeight.get(1)][newWeight.get(2)] + choice.getCost() == BigDP[i][minValue.get(0)][minValue.get(1)][minValue.get(2)];
+                    placed = true;
                     switch (choice.getAllotment()) {
                         case SMALL:
                             smallJobs.add(item.getJob());
@@ -227,23 +244,10 @@ public class MDKnapsack {
                     break;  //break out of loop as soon as some allotment was found.
                 }
             }
+            assert placed;
         }
         // at the end we should arrive at 0.0
         assert BigDP[0][minValue.get(0)][minValue.get(1)][minValue.get(2)] == 0.0;
+        return true;
     }
-
-    // private boolean reconstructSolution(Double[][][] SmallDP, Vector3D currentWeight, List<MDKnapsackItem> items, List<Job> shelf1, List<Job> shelf2, List<Job> smallJobs, List<Job> seqJobs, int i) {
-        
-    //     MDKnapsackItem item = items.get(i - 1);
-    //     for (KnapsackChoice choice : item.getChoices()) {
-    //         // subtract the first dimension and the rounded 3rd dimension from the current weight
-    //         Vector3D nextWeight = currentWeight.subtract(choice.getWeight().get(0), (int) Math.floor(choice.getWeight().get(1) * mu) , 0);
-    //         if (nextWeight.get(0) < 0 || nextWeight.get(1) < 0 || nextWeight.get(2) < 0) {
-    //             return false; //sequence of choices is invalid.
-    //         }
-
-
-    //     }
-
-    // }
 }

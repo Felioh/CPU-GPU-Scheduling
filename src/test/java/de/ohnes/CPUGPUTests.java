@@ -14,7 +14,7 @@ import org.junit.runners.Parameterized;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.ohnes.AlgorithmicComponents.Approximation.TwoApproximation;
+import de.ohnes.AlgorithmicComponents.Approximation.TrivialLowerBound;
 import de.ohnes.AlgorithmicComponents.Shelves.CpuGpuApproach;
 import de.ohnes.util.Instance;
 import de.ohnes.util.Job;
@@ -31,7 +31,7 @@ public class CPUGPUTests {
      */
     public CPUGPUTests(Instance I) {
         this.I = I;
-        DualApproximationFramework dualApproxFramework = new DualApproximationFramework(null, new CpuGpuApproach(), new TwoApproximation(), I); //todo constant approx.
+        DualApproximationFramework dualApproxFramework = new DualApproximationFramework(null, new CpuGpuApproach(), new TrivialLowerBound(), I); //todo constant approx.
         this.d = dualApproxFramework.start(0.1);
     }
 
@@ -76,7 +76,11 @@ public class CPUGPUTests {
     @Test
     public void scheduleIsValid() {
         for(Job job : I.getJobs()) {
-            assertTrue("Every Job should be alloted to at least one Machine", job.getAllotedMachines() > 0);
+            assertTrue("Every Job should be alloted to at least one Machine", job.getAllotedMachines() != 0);
+            if (job.getAllotedMachines() == -1) {
+                continue; //sequential job
+            }
+
             int allotedMachines = job.getAllotedMachines();
             for(Machine m : I.getMachines()) {
                 if(m.getJobs().contains(job)) {

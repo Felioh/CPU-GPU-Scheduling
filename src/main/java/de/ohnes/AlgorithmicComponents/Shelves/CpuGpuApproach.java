@@ -123,7 +123,12 @@ public class CpuGpuApproach extends GrageApproach {
         // 3rd dimension: total work regarding the scaled and rounded instace on L (less than n/\delta)
         //      -> optimized: (less than 2l/\delta - \floor{2/(3\delta)}\sum_{i \in T_L} weight(i))
         Vector3D capacity = new Vector3D(m, 2 * l, 2 * l * invDelta); //integer division should take care of floor //TODO: restrict? - ((2 * invDelta) / 3) * totalWeight
-        kS.solve(smallKnapsackItems, bigKnapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs, mu, v);
+        if (!kS.solve(smallKnapsackItems, bigKnapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs, mu, v)) {
+            return false;   // if the knapsack problem is not solvable, then there is no schedule of length d.
+        };
+
+        //the knapsack problem should have used all jobs.
+        assert shelf1.size() + shelf2.size() + smallJobs.size() + sequentialJobs.size() == n;
 
         // calculate the work for the jobs in the shelves for the malleable machines.
         double Ws = 0;
