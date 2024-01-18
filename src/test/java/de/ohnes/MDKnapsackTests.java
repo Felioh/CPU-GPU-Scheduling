@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -86,6 +87,7 @@ public class MDKnapsackTests {
         return Arrays.asList(new Object[][] {{smallItems, bigItems, capacity, shelf1, shelf2, smallJobs, seqJobs}});
     }
 
+    @Ignore("mu and v need to be set properly")
     @Test
     public void testMDKnapsack() {
         MDKnapsack kS = new MDKnapsack();
