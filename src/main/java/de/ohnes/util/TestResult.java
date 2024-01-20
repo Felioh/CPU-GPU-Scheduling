@@ -18,4 +18,8 @@ public class TestResult {
     private double achivedMakespan;
     private long milliseconds;
 
+    public String toString() {
+        return String.format("%d, %d, %d, %d, %d, %f, %f, %d", InstanceID, jobs, machines, seqMachines, malMachines, estimatedOptimum, achivedMakespan, milliseconds);
+    }
+
 }

@@ -10,6 +10,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.ohnes.AlgorithmicComponents.Approximation.TrivialLowerBound;
 import de.ohnes.AlgorithmicComponents.Approximation.TwoApproximation;
 import de.ohnes.AlgorithmicComponents.Shelves.CpuGpuApproach;
 import de.ohnes.logger.MyElasticsearchClient;
@@ -99,14 +100,13 @@ public class App {
      */
     private static TestResult runTest(Instance I) {
 
-        DualApproximationFramework dF = new DualApproximationFramework(null, new CpuGpuApproach(), new TwoApproximation(), I);
+        DualApproximationFramework dF = new DualApproximationFramework(null, new CpuGpuApproach(), new TrivialLowerBound(), I);
 
 
         long startTime = System.currentTimeMillis();
         double d = dF.start(epsilon);
         long endTime = System.currentTimeMillis();
         LOGGER.info("Ran instance with {} malleable, {} sequential machines and {} jobs in {} milliseconds.", I.getM(), I.getL(), I.getN(), (endTime - startTime));
-
         TestResult tr = new TestResult();
         tr.setAchivedMakespan(I.getMakespan());
         tr.setEstimatedOptimum(d);
@@ -116,7 +116,8 @@ public class App {
         tr.setSeqMachines(I.getL());
         tr.setMilliseconds((endTime - startTime));
         tr.setInstanceID(I.getId());
-
+        
+        LOGGER.info("Result: {}", tr.toString());
         return tr;
     }
 }

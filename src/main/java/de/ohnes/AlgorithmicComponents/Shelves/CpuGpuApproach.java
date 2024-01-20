@@ -118,7 +118,9 @@ public class CpuGpuApproach extends GrageApproach {
         // 3rd dimension: total work regarding the scaled and rounded instace on L (less than n/\delta)
         //      -> optimized: (less than 2l/\delta)
         Vector3D capacity = new Vector3D(I.getM(), 2* l, invDelta * l * n);
-        kS.solve(smallKnapsackItems, bigKnapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs);
+        if (!kS.solve(smallKnapsackItems, bigKnapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs)) {
+            return false;
+        }
 
         // calculate the work for the jobs in the shelves for the malleable machines.
         double Ws = 0;
