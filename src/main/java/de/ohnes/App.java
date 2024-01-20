@@ -10,7 +10,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.ohnes.AlgorithmicComponents.Approximation.TwoApproximation;
+import de.ohnes.AlgorithmicComponents.Approximation.TrivialLowerBound;
 import de.ohnes.AlgorithmicComponents.Shelves.CpuGpuApproach;
 import de.ohnes.logger.MyElasticsearchClient;
 import de.ohnes.logger.printSchedule;
@@ -99,7 +99,7 @@ public class App {
      */
     private static TestResult runTest(Instance I) {
 
-        DualApproximationFramework dF = new DualApproximationFramework(null, new CpuGpuApproach(), new TwoApproximation(), I);
+        DualApproximationFramework dF = new DualApproximationFramework(null, new CpuGpuApproach(), new TrivialLowerBound(), I);
 
 
         long startTime = System.currentTimeMillis();
@@ -117,6 +117,7 @@ public class App {
         tr.setMilliseconds((endTime - startTime));
         tr.setInstanceID(I.getId());
 
+        LOGGER.info("Result: {}", tr.toString());
         return tr;
     }
 }
