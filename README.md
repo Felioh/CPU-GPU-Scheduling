@@ -1,8 +1,8 @@
-Algorithms for machine scheduling with malleable jobs
----
+# Algorithms for machine scheduling with malleable jobs
 
 An Implementation of the algorithms from Jansen & Land and Grage & Jansen, building upon an algorithm from Mounié, Rapine and Trystram.
 
+- [Algorithms for machine scheduling with malleable jobs](#algorithms-for-machine-scheduling-with-malleable-jobs)
 - [Quick Start](#quick-start)
   - [Run the local test-files](#run-the-local-test-files)
 - [Execution with docker-compose](#execution-with-docker-compose)
@@ -78,6 +78,23 @@ The dockerfile is written as a `multi-stage dockerfile`. Therefore there is no n
 # Configuration for testing
 
 All parameters are tunable via the environment variables. Note that the code does support randomly generated instances but also allows reading in user-specified .json files containing an instance. (format as in `./TestInstances/`).
+
+
+| Parameter (Env variable)   | Description                                                  | Default |
+|---------------------------|--------------------------------------------------------------|---------|
+| NB_TESTS                  | Number of tests to run.                                     | 10 |
+| EPSILON                   | Epsilon (primarily for the disired accuracy)                       | 0.1 |
+| INSTANCE_MINJOBS          | Minimum number of jobs in the test instance.             | 10 |
+| INSTANCE_MAXJOBS          | Maximum number of jobs in the test instance.             | 10 |
+| INSTANCE_MINMACHINES      | Minimum number of malleable machines in the test instance.    | 10 |
+| INSTANCE_MAXMACHINES      | Maximum number of malleable machines in the test instance.    | 20 |
+| INSTANCE_SEQMACHINES      | The number of sequential machine in relation to the malleable machines.            | 0.2  |
+| INSTANCE_MAX_SEQUENTIAL_TIME | The maximum sequential processing time of any job, also the malleable processing time on a single machine.        | 100  |
+| ES_HOST                   | Elasticsearch host.                                         | localhost  |
+| ES_PORT                   | Elasticsearch port.                                         | 9200 |
+| ES_INDEX                  | Elasticsearch index.                                        | results  |
+
+
 
 
 # A couple of Maven commands
