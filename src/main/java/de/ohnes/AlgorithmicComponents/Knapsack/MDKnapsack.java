@@ -41,8 +41,7 @@ public class MDKnapsack {
         // 3rd dimension: total work on L
         // 4th dimension: total weight on L (not used by small jobs)
         Double[][][][] BigDP = new Double[b + 1][capacity.get(0) + 1][capacity.get(1) + 1][capacity.get(2) + 1];
-        
-        
+
         //initialization
         for (int x1 = 0; x1 < BigDP[0].length; x1++) {
             for (int x2 = 0; x2 < BigDP[0][x1].length; x2++) {

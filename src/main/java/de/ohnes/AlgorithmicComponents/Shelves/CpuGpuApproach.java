@@ -98,6 +98,7 @@ public class CpuGpuApproach extends GrageApproach {
             if (knapsackItem.getChoices().isEmpty()) {
                 return false;
             }
+            
             if (weight > 0) {
                 // if the job is big
                 bigKnapsackItems.add(knapsackItem);
