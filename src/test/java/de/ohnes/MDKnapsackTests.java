@@ -26,17 +26,19 @@ import de.ohnes.util.Vector3D;
 @RunWith(Parameterized.class)
 public class MDKnapsackTests {
 
-    private List<MDKnapsackItem> items;
+    private List<MDKnapsackItem> smallItems;
+    private List<MDKnapsackItem> bigItems;
     private Vector3D capacity;
     List<Job> shelf1;
     List<Job> shelf2;
     List<Job> smallJobs;
     List<Job> seqJobs;
 
-    public MDKnapsackTests(List<MDKnapsackItem> items, Vector3D capacity, List<Job> shelf1, List<Job> shelf2, List<Job> smallJobs, List<Job> seqJobs) {
+    public MDKnapsackTests(List<MDKnapsackItem> smallItems, List<MDKnapsackItem> bigItems, Vector3D capacity, List<Job> shelf1, List<Job> shelf2, List<Job> smallJobs, List<Job> seqJobs) {
         super();
         this.capacity = capacity;
-        this.items = items;
+        this.smallItems = smallItems;
+        this.bigItems = bigItems;
         this.seqJobs = seqJobs;
         this.shelf1 = shelf1;
         this.shelf2 = shelf2;
@@ -54,40 +56,41 @@ public class MDKnapsackTests {
 
         Vector3D capacity = new Vector3D(10, 10, 10);
 
-        List<MDKnapsackItem> items = new ArrayList<>();
+        List<MDKnapsackItem> smallItems = new ArrayList<>();
+        List<MDKnapsackItem> bigItems = new ArrayList<>();
         MDKnapsackItem item1 = new MDKnapsackItem();
         item1.setJob(new Job(1, new int[]{10, 20, 30}, 20));
-        item1.addChoice(MDKnapsackChoice.SHELF1, 1, new Vector3D(10, 0, 0));
-        item1.addChoice(MDKnapsackChoice.SHELF2, 2, new Vector3D(0, 10, 0));
-        item1.addChoice(MDKnapsackChoice.SEQUENTIAL, 3, new Vector3D(0, 0, 10));
+        // item1.addChoice(MDKnapsackChoice.SHELF1, 1, new Vector3D(10, 0, 0));
+        // item1.addChoice(MDKnapsackChoice.SHELF2, 2, new Vector3D(0, 10, 0));
+        item1.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, 0, 10));
         item1.addChoice(MDKnapsackChoice.SMALL, 4, new Vector3D(0, 0, 0));
-        items.add(item1);
+        smallItems.add(item1);
 
         MDKnapsackItem item2 = new MDKnapsackItem();
         item2.setJob(new Job(1, new int[]{10, 20, 30}, 20));
         item2.addChoice(MDKnapsackChoice.SHELF1, 1, new Vector3D(10, 0, 0));
         item2.addChoice(MDKnapsackChoice.SHELF2, 2, new Vector3D(0, 10, 0));
         item2.addChoice(MDKnapsackChoice.SEQUENTIAL, 3, new Vector3D(0, 0, 10));
-        item2.addChoice(MDKnapsackChoice.SMALL, 4, new Vector3D(0, 0, 0));
-        items.add(item2);
+        // item2.addChoice(MDKnapsackChoice.SMALL, 4, new Vector3D(0, 0, 0));
+        bigItems.add(item2);
 
         MDKnapsackItem item3 = new MDKnapsackItem();
         item3.setJob(new Job(1, new int[]{10, 20, 30}, 20));
         item3.addChoice(MDKnapsackChoice.SHELF1, 1, new Vector3D(10, 0, 0));
         item3.addChoice(MDKnapsackChoice.SHELF2, 2, new Vector3D(0, 10, 0));
         item3.addChoice(MDKnapsackChoice.SEQUENTIAL, 3, new Vector3D(0, 0, 10));
-        item3.addChoice(MDKnapsackChoice.SMALL, 4, new Vector3D(0, 0, 0));
-        items.add(item3);
+        // item3.addChoice(MDKnapsackChoice.SMALL, 4, new Vector3D(0, 0, 0));
+        bigItems.add(item3);
 
 
-        return Arrays.asList(new Object[][] {{items, capacity, shelf1, shelf2, smallJobs, seqJobs}});
+        return Arrays.asList(new Object[][] {{smallItems, bigItems, capacity, shelf1, shelf2, smallJobs, seqJobs}});
     }
 
     @Test
     public void testMDKnapsack() {
         MDKnapsack kS = new MDKnapsack();
-        kS.solve(items, capacity, shelf1, shelf2, smallJobs, seqJobs);
-        assertTrue("All jobs should be selected", shelf1.size() + shelf2.size() + smallJobs.size() + seqJobs.size() == items.size()); //length should be leq than capacity
+        kS.solve(smallItems, bigItems, capacity, shelf1, shelf2, smallJobs, seqJobs);
+        assertTrue("All jobs should be selected", shelf1.size() + shelf2.size() + smallJobs.size() + seqJobs.size() == smallItems.size() + bigItems.size()); //length should be leq than capacity
         assertTrue("No job should be chosen as small", smallJobs.size()==0);
         assertTrue("In Shelf1 should be 1 job.", shelf1.size()==1);
         assertTrue("In Shelf2 should be 1 job.", shelf2.size()==1);

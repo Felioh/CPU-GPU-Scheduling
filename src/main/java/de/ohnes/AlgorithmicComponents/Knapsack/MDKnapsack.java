@@ -12,9 +12,27 @@ import de.ohnes.util.Vector3D;
  * It provides a method to solve the problem and allocate jobs to different shelves based on their weights and costs.
  */
 public class MDKnapsack {
-
-    public void solve(List<MDKnapsackItem> items, Vector3D capacity, List<Job> shelf1, List<Job> shelf2, List<Job> smallJobs, List<Job> seqJobs) {
-        Double[][][][] dp = new Double[items.size()+1][capacity.get(0)+1][capacity.get(1)+1][capacity.get(2)+1];
+    /**
+     * solves a multi-dimensional knapsack problem.
+     * 
+     * @param smallItems
+     * @param bigItems
+     * @param capacity
+     * @param shelf1
+     * @param shelf2
+     * @param smallJobs
+     * @param seqJobs
+     */
+    public boolean solve(List<MDKnapsackItem> smallItems, List<MDKnapsackItem> bigItems, Vector3D capacity, List<Job> shelf1, List<Job> shelf2, List<Job> smallJobs, List<Job> seqJobs) {
+        List<MDKnapsackItem> items = new java.util.ArrayList<>() {{
+            addAll(smallItems);
+            addAll(bigItems);
+        }};
+        int b = bigItems.size();
+        int s = smallItems.size();
+        int n = s + b;
+        //TODO: reduce 3rd dimension
+        Double[][][][] dp = new Double[n+1][capacity.get(0)+1][capacity.get(1)+1][capacity.get(2)+1];
 
 
         //initialization
@@ -28,6 +46,7 @@ public class MDKnapsack {
 
         //acutal dp
         for (int i = 1; i <= items.size(); i++) {
+            boolean placed = false;
             Integer[] costs = items.get(i-1).getCosts();
             Vector3D[] weights = items.get(i-1).getWeights();
             for (int x1 = 0; x1 < dp[0].length; x1++) {
@@ -51,9 +70,13 @@ public class MDKnapsack {
                         }
                         if (minVal < Double.MAX_VALUE) {
                             dp[i][x1][x2][x3] = minVal;
+                            placed = true;
                         }
                     }
                 }
+            }
+            if (!placed) {
+                return false;
             }
         }
 
@@ -98,5 +121,8 @@ public class MDKnapsack {
                 }
             }
         }
+        // at the end we should arrive at 0.0
+        assert dp[0][minValue.get(0)][minValue.get(1)][minValue.get(2)] == 0.0;
+        return true;
     }
 }

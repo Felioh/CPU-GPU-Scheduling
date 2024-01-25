@@ -45,15 +45,16 @@ public class Instance {
 
     
     /** 
-     * @param minJobs
-     * @param maxJobs
-     * @param minMachines
-     * @param maxMachines
+     * @param minJobs minimal number of jobs
+     * @param maxJobs maximal number of jobs
+     * @param minMachines minimal number of malleable machines
+     * @param maxMachines maximal number of malleable machines
+     * @param seqMachines the number of sequential machines in relation to malleable machines
      */
-    public void generateRandomInstance(int minJobs, int maxJobs, int minMachines, int maxMachines, int maxSeqTime) {
+    public void generateRandomInstance(int minJobs, int maxJobs, int minMachines, int maxMachines, double seqMachines, int maxSeqTime) {
 
         this.m = MyMath.getRandomNumber(minMachines, maxMachines);
-        this.l = MyMath.getRandomNumber(minMachines, maxMachines); //TODO different parameters??
+        this.l = (int) Math.floor(this.m * seqMachines);
         this.n = MyMath.getRandomNumber(minJobs, maxJobs);
         this.jobs = new Job[this.n];
         

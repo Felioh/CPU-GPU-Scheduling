@@ -34,7 +34,8 @@ public class CpuGpuApproach extends GrageApproach {
 
         // inverted delta
         final int invDelta = 6;
-        final int n = I.getJobs().length;
+        final int n = I.getN();
+        final int l = I.getL();
         final double mu = (1.0 * n * invDelta) / d;
 
         List<Job> shelf2 = new ArrayList<>(Arrays.asList(MyMath.findBigJobs(I, d)));
@@ -42,18 +43,27 @@ public class CpuGpuApproach extends GrageApproach {
 
         //transform to knapsack problem
 
-        List<MDKnapsackItem> knapsackItems = new ArrayList<>();
+        List<MDKnapsackItem> smallKnapsackItems = new ArrayList<>();
+        List<MDKnapsackItem> bigKnapsackItems = new ArrayList<>();
         for (Job job : smallJobs) {
             MDKnapsackItem knapsackItem = new MDKnapsackItem();
             knapsackItem.setJob(job);
             //c_{i, S}
             knapsackItem.addChoice(MDKnapsackChoice.SMALL, job.getProcessingTime(1), new Vector3D(0, 0, 0));
             //c_{i, 3}
+            int weight = 0;
             //if a choice would certainly violate the deadline d, we do not allow it.
             if (job.getSequentialProcessingTime() <= d) {
-                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, job.getSequentialWeight(d), job.getScaledRoundedSequentialProcessingTime(mu)));
+                weight = job.getSequentialWeight(d);
+                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, weight, job.getScaledRoundedSequentialProcessingTime(mu)));
             }
-            knapsackItems.add(knapsackItem);
+            if (weight > 0) {
+                // if the job is big
+                bigKnapsackItems.add(knapsackItem);
+            } else {
+                // if the job is small
+                smallKnapsackItems.add(knapsackItem);
+            }
         }
         for (Job job : shelf2) {
             MDKnapsackItem knapsackItem = new MDKnapsackItem();
@@ -73,9 +83,11 @@ public class CpuGpuApproach extends GrageApproach {
                 knapsackItem.addChoice(MDKnapsackChoice.SHELF2, job.getProcessingTime(dHalfAllotment) * dHalfAllotment, new Vector3D(0, 0, 0));
             }
             //c_{i, 3}
+            int weight = 0;
             //if a choice would certainly violate the deadline d, we do not allow it.
             if (job.getSequentialProcessingTime() <= d) {
-                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, job.getSequentialWeight(d), job.getScaledRoundedSequentialProcessingTime(mu)));
+                weight = job.getSequentialWeight(d);
+                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, weight, job.getScaledRoundedSequentialProcessingTime(mu)));
             }
 
             // if there is no valid choice for some job, then we must reject the deadline d.
@@ -83,7 +95,14 @@ public class CpuGpuApproach extends GrageApproach {
             if (knapsackItem.getChoices().isEmpty()) {
                 return false;
             }
-            knapsackItems.add(knapsackItem);
+            
+            if (weight > 0) {
+                // if the job is big
+                bigKnapsackItems.add(knapsackItem);
+            } else {
+                // if the job is small
+                smallKnapsackItems.add(knapsackItem);
+            }
         }
         
 
@@ -94,8 +113,14 @@ public class CpuGpuApproach extends GrageApproach {
         shelf2.clear();
         List<Job> sequentialJobs = new ArrayList<>();
         smallJobs.clear();
-        Vector3D capacity = new Vector3D(I.getM(), 2* I.getL(), invDelta * I.getL()*I.getN());
-        kS.solve(knapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs);
+        // 1st dimension: number of machines used by T_1 (less than m)
+        // 2nd dimension: weight of tasks on L (less than 2l)
+        // 3rd dimension: total work regarding the scaled and rounded instace on L (less than n/\delta)
+        //      -> optimized: (less than 2l/\delta)
+        Vector3D capacity = new Vector3D(I.getM(), 2* l, invDelta * l * n);
+        if (!kS.solve(smallKnapsackItems, bigKnapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs)) {
+            return false;
+        }
 
         // calculate the work for the jobs in the shelves for the malleable machines.
         double Ws = 0;
