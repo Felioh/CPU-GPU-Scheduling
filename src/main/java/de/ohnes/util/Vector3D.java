@@ -20,8 +20,8 @@ public class Vector3D {
         return x1 <= this.values[0] && x2 <= this.values[1] && x3 <= this.values[2];
     }
 
-    public Vector3D subtract(Vector3D other) {
-        return new Vector3D(values[0] - other.get(0), values[1] - other.get(1), values[2] - other.get(2));
+    public Vector3D subtract(int x1, int x2, int x3) {
+        return new Vector3D(values[0] - x1, values[1] - x2, values[2] - x3);
     }
 
 }

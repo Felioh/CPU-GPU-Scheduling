@@ -16,7 +16,7 @@ ENV INSTANCE_SEQMACHINES=5
 ENV INSTANCE_MAX_SEQUENTIAL_TIME 100
 ENV ES_HOST "217.94.61.24"
 ENV ES_PORT 9200
-ENV ES_INDEX "hpc-2024"
+ENV ES_INDEX "hpc-2024-optimized"
 
 COPY --from=build --chmod=0777 /src/target/cpu-gpu-scheduling-1.0-SNAPSHOT-jar-with-dependencies.jar /app/SchedulingAlgorithms.jar
 # use the Epslion ("noops") GC, because we want to measure the time of these algorithms.

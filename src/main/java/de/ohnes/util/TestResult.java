@@ -1,6 +1,7 @@
 package de.ohnes.util;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ public class TestResult {
     private double achivedMakespan;
     private long milliseconds;
 
+    @JsonIgnore
     public String toString() {
         return String.format("%d, %d, %d, %d, %d, %f, %f, %d", InstanceID, jobs, machines, seqMachines, malMachines, estimatedOptimum, achivedMakespan, milliseconds);
     }

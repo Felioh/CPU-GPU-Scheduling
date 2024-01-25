@@ -18,6 +18,9 @@ import de.ohnes.util.Vector3D;
  */
 public class CpuGpuApproach extends GrageApproach {
 
+    // invDelta = 1/\delta
+    public static final int invDelta = 18;
+
     public CpuGpuApproach() {
         super();
     }
@@ -30,16 +33,16 @@ public class CpuGpuApproach extends GrageApproach {
      */
     @Override
     public boolean solve(double d, double epsilon) {
-        //"forget about small jobs"
 
-        // inverted delta
-        final int invDelta = 6;
         final int n = I.getN();
         final int l = I.getL();
-        final double mu = (1.0 * n * invDelta) / d;
+        final int m = I.getM();
+        final double v = (2.0 * invDelta) / d;
+        final double mu = (1.0 * n * invDelta) / (d * l);
 
         List<Job> shelf2 = new ArrayList<>(Arrays.asList(MyMath.findBigJobs(I, d)));
         List<Job> smallJobs = new ArrayList<>(Arrays.asList(MyMath.findSmallJobs(I, d)));
+
 
         //transform to knapsack problem
 
@@ -55,7 +58,7 @@ public class CpuGpuApproach extends GrageApproach {
             //if a choice would certainly violate the deadline d, we do not allow it.
             if (job.getSequentialProcessingTime() <= d) {
                 weight = job.getSequentialWeight(d);
-                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, weight, job.getScaledRoundedSequentialProcessingTime(mu)));
+                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, weight, job.getSequentialProcessingTime()));
             }
             if (weight > 0) {
                 // if the job is big
@@ -87,7 +90,7 @@ public class CpuGpuApproach extends GrageApproach {
             //if a choice would certainly violate the deadline d, we do not allow it.
             if (job.getSequentialProcessingTime() <= d) {
                 weight = job.getSequentialWeight(d);
-                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, weight, job.getScaledRoundedSequentialProcessingTime(mu)));
+                knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, weight, job.getSequentialProcessingTime()));
             }
 
             // if there is no valid choice for some job, then we must reject the deadline d.
@@ -116,11 +119,14 @@ public class CpuGpuApproach extends GrageApproach {
         // 1st dimension: number of machines used by T_1 (less than m)
         // 2nd dimension: weight of tasks on L (less than 2l)
         // 3rd dimension: total work regarding the scaled and rounded instace on L (less than n/\delta)
-        //      -> optimized: (less than 2l/\delta)
-        Vector3D capacity = new Vector3D(I.getM(), 2* l, invDelta * l * n);
-        if (!kS.solve(smallKnapsackItems, bigKnapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs)) {
-            return false;
-        }
+        //      -> optimized: (less than 2l/\delta - \floor{2/(3\delta)}\sum_{i \in T_L} weight(i))
+        Vector3D capacity = new Vector3D(m, 2 * l, 2 * l * invDelta); //integer division should take care of floor //TODO: restrict? - ((2 * invDelta) / 3) * totalWeight
+        if (!kS.solve(smallKnapsackItems, bigKnapsackItems, capacity, shelf1, shelf2, smallJobs, sequentialJobs, mu, v)) {
+            return false;   // if the knapsack problem is not solvable, then there is no schedule of length d.
+        };
+
+        //the knapsack problem should have used all jobs.
+        assert shelf1.size() + shelf2.size() + smallJobs.size() + sequentialJobs.size() == n;
 
         // calculate the work for the jobs in the shelves for the malleable machines.
         double Ws = 0;
@@ -141,22 +147,22 @@ public class CpuGpuApproach extends GrageApproach {
             WShelf2 += job.getAllotedMachines() * job.getProcessingTime(job.getAllotedMachines()); //update the work of shelf2
         }
 
-        if(WShelf1 + WShelf2 > I.getM() * d - Ws) {   //there cant exists a schedule of with makespan (s. Thesis Felix S. 76)
+        if(WShelf1 + WShelf2 > m * d - Ws) {   //there cant exists a schedule of with makespan (s. Thesis Felix S. 76)
             return false;
         }
 
         // apply the applyTransformationRules
         List<Job> shelf0 = applyTransformationRules(d, shelf1, shelf2, p1);
         // List<Job> shelf0 = applyTransformationRules(d, shelf1, shelf2, p1);
-        addSmallJobs(shelf1, shelf2, smallJobs, d, I.getM());
+        addSmallJobs(shelf1, shelf2, smallJobs, d, m);
 
         List<Machine> machinesS0 = new ArrayList<>();
         double startTime = -1;
         for(Job job : shelf0) {
             if(job.getStartingTime() != startTime) {
-                Machine m = new Machine(0);
-                m.addJob(job);
-                machinesS0.add(m);
+                Machine machine = new Machine(0);
+                machine.addJob(job);
+                machinesS0.add(machine);
                 startTime = job.getProcessingTime(job.getAllotedMachines());
             } else {
                 machinesS0.get(machinesS0.size() - 1).addJob(job);
