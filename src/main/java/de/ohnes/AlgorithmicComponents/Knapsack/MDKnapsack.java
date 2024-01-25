@@ -36,11 +36,10 @@ public class MDKnapsack {
         final double muDivV = mu / v;
         final int invDelta = CpuGpuApproach.invDelta;
         
-        //Attention: the order of the dimensions is swapped!
         // 1st dimension: number of items
         // 2nd dimension: T_1 uses at most M machines (malleable constraint)
-        // 3th dimension: total weight on L (not used by small jobs)
-        // 4rd dimension: total work on L
+        // 3rd dimension: total work on L
+        // 4th dimension: total weight on L (not used by small jobs)
         Double[][][][] BigDP = new Double[b + 1][capacity.get(0) + 1][capacity.get(1) + 1][capacity.get(2) + 1];
         
         
@@ -65,7 +64,6 @@ public class MDKnapsack {
                         double minVal = Double.MAX_VALUE;
                         for (int c = 0; c < costs.length; c++) { //for the choices
                             Vector3D w = weights[c];
-                            //Attention: the order of the dimensions is swapped!
                             int x1_ = x1 - w.get(0);
                             //qHat = \floor{p_i/v} - weight(i) * \floor{d/3*v}
                             int x2_ = x2 - (int) Math.floor(w.get(1) * v) - w.get(2) * (int) Math.floor(2 * invDelta / 3); //TODO remove math.floor

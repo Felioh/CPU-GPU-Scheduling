@@ -43,7 +43,6 @@ public class CpuGpuApproach extends GrageApproach {
         List<Job> shelf2 = new ArrayList<>(Arrays.asList(MyMath.findBigJobs(I, d)));
         List<Job> smallJobs = new ArrayList<>(Arrays.asList(MyMath.findSmallJobs(I, d)));
 
-        int totalWeight = 0; //variable to keep track of the total weight of all jobs.
 
         //transform to knapsack problem
 
@@ -61,7 +60,6 @@ public class CpuGpuApproach extends GrageApproach {
                 weight = job.getSequentialWeight(d);
                 knapsackItem.addChoice(MDKnapsackChoice.SEQUENTIAL, 0, new Vector3D(0, weight, job.getSequentialProcessingTime()));
             }
-            totalWeight += weight;
             if (weight > 0) {
                 // if the job is big
                 bigKnapsackItems.add(knapsackItem);
@@ -100,7 +98,6 @@ public class CpuGpuApproach extends GrageApproach {
             if (knapsackItem.getChoices().isEmpty()) {
                 return false;
             }
-            totalWeight += weight;
             if (weight > 0) {
                 // if the job is big
                 bigKnapsackItems.add(knapsackItem);
