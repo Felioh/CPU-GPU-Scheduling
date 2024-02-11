@@ -59,7 +59,7 @@ public class App {
                     }
                     LOGGER.info("Reading test file from {}/{}", TestFilePath, testFile.getName());
                     TestResult tr = runTest(I);
-                    LOGGER.info("Computed Schedule: \n{}", printSchedule.printMachines(I.getMachines()));
+                    // LOGGER.info("Computed Schedule: \n{}", printSchedule.printMachines(I.getMachines()));
                     MyElasticsearchClient.pushData(ESIndex, tr);
                 }
             }

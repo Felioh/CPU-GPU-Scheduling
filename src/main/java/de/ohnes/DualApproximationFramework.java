@@ -32,20 +32,20 @@ public class DualApproximationFramework {
         LOGGER.info("Starting dual approximation Framework with shelvesAlgo: {}", this.getShelvesAlgoName());
         usedAlgo = this.knapsack;
         usedAlgo.setInstance(I);
-        double lowerBound = this.approx.approximate(I) / 2; //TODO this bound could be thighter.
-        double upperBound = lowerBound * 8;                 //TODO add list scheduling. -> schedule twiari greedy and divide by 2.
+        double lowerBound = this.approx.approximate(I); //TODO this bound could be thighter.
+        double upperBound = lowerBound * 50;                 //TODO add list scheduling. -> schedule twiari greedy and divide by 2.
 
         return binarySearch(usedAlgo, epsilon, lowerBound, upperBound);
     }
 
     private double binarySearch(Algorithm algo, double epsilon, double l, double r) {
 
-        double mid = l + (r - l) / 2;
+        double mid = l + (r - l) / 2.0;
         I.resetInstance(); //reset the instance because it was altered in previous attempt.
         if(algo.solve(mid, epsilon)) { //a schedule of length "mid" exists
-
-            if((1 + epsilon) * l > mid) {
-                return mid;
+        
+            if (r / mid <= (1 + epsilon)) {
+                return r;
             }
 
             return binarySearch(algo, epsilon, l, mid); //try to find a better schedule

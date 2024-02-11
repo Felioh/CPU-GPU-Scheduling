@@ -1,0 +1,182 @@
+09:10:34.343 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:10:35.411 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:10:35.412 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:10:48.079 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 100 jobs in 12666 milliseconds.
+09:10:48.092 [main] INFO  de.ohnes.App - Result: 1707642635404, 100, 70, 20, 50, 40.844531, 39.000000, 12666
+09:10:48.251 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:10:48.498 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:11:50.164 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:11:51.131 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:11:51.137 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:12:02.243 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 100 jobs in 11106 milliseconds.
+09:12:02.246 [main] INFO  de.ohnes.App - Result: 1707642711128, 100, 70, 20, 50, 34.570089, 50.000000, 11106
+09:12:02.375 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:12:02.607 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:13:04.236 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:13:05.186 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:13:05.187 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:13:17.691 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 125 jobs in 12504 milliseconds.
+09:13:17.693 [main] INFO  de.ohnes.App - Result: 1707642785181, 125, 70, 20, 50, 46.391741, 49.000000, 12504
+09:13:17.831 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:13:18.060 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:14:19.711 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:14:20.614 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:14:20.615 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:14:31.119 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 125 jobs in 10504 milliseconds.
+09:14:31.121 [main] INFO  de.ohnes.App - Result: 1707642860608, 125, 70, 20, 50, 46.156250, 50.000000, 10504
+09:14:31.271 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:14:31.503 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:15:34.085 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:15:35.536 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:15:35.538 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:15:49.435 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 150 jobs in 13897 milliseconds.
+09:15:49.450 [main] INFO  de.ohnes.App - Result: 1707642935531, 150, 70, 20, 50, 41.765625, 42.000000, 13897
+09:15:49.711 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:15:49.985 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:16:51.643 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:16:52.584 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:16:52.586 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:17:07.499 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 150 jobs in 14913 milliseconds.
+09:17:07.503 [main] INFO  de.ohnes.App - Result: 1707643012578, 150, 70, 20, 50, 47.582478, 43.000000, 14913
+09:17:07.635 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:17:07.858 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:18:09.514 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:18:10.484 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:18:10.489 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:18:24.465 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 175 jobs in 13975 milliseconds.
+09:18:24.467 [main] INFO  de.ohnes.App - Result: 1707643090478, 175, 70, 20, 50, 46.936607, 58.000000, 13975
+09:18:24.590 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:18:24.805 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:19:26.434 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:19:27.390 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:19:27.395 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:19:42.862 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 175 jobs in 15467 milliseconds.
+09:19:42.864 [main] INFO  de.ohnes.App - Result: 1707643167384, 175, 70, 20, 50, 48.853125, 52.000000, 15467
+09:19:42.999 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:19:43.233 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:20:44.930 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:20:45.907 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:20:45.908 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:21:11.515 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 200 jobs in 25607 milliseconds.
+09:21:11.522 [main] INFO  de.ohnes.App - Result: 1707643245890, 200, 70, 20, 50, 44.073661, 64.000000, 25607
+09:21:11.656 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:21:11.894 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:22:13.545 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:22:14.533 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:22:14.535 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:22:36.858 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 200 jobs in 22323 milliseconds.
+09:22:36.860 [main] INFO  de.ohnes.App - Result: 1707643334516, 200, 70, 20, 50, 46.774554, 67.000000, 22323
+09:22:36.989 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:22:37.233 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:23:38.862 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:23:39.757 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:23:39.763 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:24:03.692 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 225 jobs in 23928 milliseconds.
+09:24:03.709 [main] INFO  de.ohnes.App - Result: 1707643419740, 225, 70, 20, 50, 52.053571, 71.000000, 23928
+09:24:03.886 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:24:04.141 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:25:05.830 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:25:06.768 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:25:06.770 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:25:37.797 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 225 jobs in 31027 milliseconds.
+09:25:37.802 [main] INFO  de.ohnes.App - Result: 1707643506751, 225, 70, 20, 50, 53.680246, 67.000000, 31027
+09:25:37.947 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:25:38.184 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:26:39.829 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:26:40.749 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:26:40.754 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:27:11.606 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 250 jobs in 30851 milliseconds.
+09:27:11.608 [main] INFO  de.ohnes.App - Result: 1707643600730, 250, 70, 20, 50, 53.557478, 73.000000, 30851
+09:27:11.742 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:27:11.964 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:28:13.598 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:28:14.540 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:28:14.546 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:28:42.089 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 250 jobs in 27543 milliseconds.
+09:28:42.093 [main] INFO  de.ohnes.App - Result: 1707643694520, 250, 70, 20, 50, 57.547433, 78.000000, 27543
+09:28:42.287 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:28:42.523 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:29:44.765 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:29:45.797 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:29:45.799 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:30:17.072 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 275 jobs in 31273 milliseconds.
+09:30:17.074 [main] INFO  de.ohnes.App - Result: 1707643785777, 275, 70, 20, 50, 61.782924, 83.000000, 31273
+09:30:17.214 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:30:17.445 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:31:19.150 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:31:20.092 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:31:20.093 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:31:52.032 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 275 jobs in 31939 milliseconds.
+09:31:52.034 [main] INFO  de.ohnes.App - Result: 1707643880073, 275, 70, 20, 50, 65.373884, 89.000000, 31939
+09:31:52.181 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:31:52.425 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:32:54.150 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:32:55.137 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:32:55.138 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:33:31.753 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 300 jobs in 36615 milliseconds.
+09:33:31.755 [main] INFO  de.ohnes.App - Result: 1707643975114, 300, 70, 20, 50, 67.123326, 89.000000, 36615
+09:33:31.907 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:33:32.150 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:34:33.869 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:34:34.828 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:34:34.830 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:35:09.930 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 300 jobs in 35100 milliseconds.
+09:35:09.956 [main] INFO  de.ohnes.App - Result: 1707644074804, 300, 70, 20, 50, 72.494420, 98.000000, 35100
+09:35:10.110 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:35:10.374 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:36:12.148 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:36:13.204 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:36:13.205 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:36:59.597 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 325 jobs in 46391 milliseconds.
+09:36:59.598 [main] INFO  de.ohnes.App - Result: 1707644173183, 325, 70, 20, 50, 76.975446, 105.000000, 46391
+09:36:59.736 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:36:59.978 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:38:01.716 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:38:02.682 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:38:02.684 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:38:46.634 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 325 jobs in 43950 milliseconds.
+09:38:46.640 [main] INFO  de.ohnes.App - Result: 1707644282655, 325, 70, 20, 50, 77.650670, 106.000000, 43950
+09:38:46.776 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:38:47.034 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:39:48.689 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:39:49.664 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:39:49.666 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:41:06.804 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 350 jobs in 77138 milliseconds.
+09:41:06.806 [main] INFO  de.ohnes.App - Result: 1707644389653, 350, 70, 20, 50, 68.127902, 101.000000, 77138
+09:41:06.949 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:41:07.197 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:42:08.849 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:42:09.849 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:42:09.854 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:43:20.974 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 350 jobs in 71120 milliseconds.
+09:43:20.977 [main] INFO  de.ohnes.App - Result: 1707644529822, 350, 70, 20, 50, 71.709598, 106.000000, 71120
+09:43:21.125 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:43:21.358 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:44:23.147 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:44:24.153 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:44:24.154 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:45:21.058 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 375 jobs in 56904 milliseconds.
+09:45:21.061 [main] INFO  de.ohnes.App - Result: 1707644664123, 375, 70, 20, 50, 88.178013, 120.000000, 56904
+09:45:21.193 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:45:21.439 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:46:23.144 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:46:24.133 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:46:24.136 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:47:52.834 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 375 jobs in 88697 milliseconds.
+09:47:52.836 [main] INFO  de.ohnes.App - Result: 1707644784131, 375, 70, 20, 50, 75.972321, 113.000000, 88697
+09:47:52.977 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:47:53.228 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:48:54.968 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:48:55.958 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:48:55.961 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:50:22.389 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 400 jobs in 86426 milliseconds.
+09:50:22.391 [main] INFO  de.ohnes.App - Result: 1707644935944, 400, 70, 20, 50, 76.602902, 114.000000, 86426
+09:50:22.529 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:50:22.792 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
+09:51:24.514 [main] INFO  de.ohnes.App - Starting Algorithm!
+09:51:25.495 [main] INFO  de.ohnes.App - Reading test file from /testfiles/in.json
+09:51:25.497 [main] INFO  de.ohnes.DualApproximationFramework - Starting dual approximation Framework with shelvesAlgo: CpuGpuApproach
+09:52:43.669 [main] INFO  de.ohnes.App - Ran instance with 50 malleable, 20 sequential machines and 400 jobs in 78172 milliseconds.
+09:52:43.672 [main] INFO  de.ohnes.App - Result: 1707645085483, 400, 70, 20, 50, 79.301786, 117.000000, 78172
+09:52:43.817 [main] DEBUG de.ohnes.logger.MyElasticsearchClient - Trying to push test result to Elasticsearch...
+09:52:44.086 [main] WARN  de.ohnes.logger.MyElasticsearchClient - Couldn't reach ES Server. Saving data locally until next try.
